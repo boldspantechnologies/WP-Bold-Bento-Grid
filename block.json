@@ -21,6 +21,10 @@
     "gap": {
       "type": "number",
       "default": 16
+    },
+    "preset": {
+      "type": "string",
+      "default": "balanced"
     }
   },
   "supports": {

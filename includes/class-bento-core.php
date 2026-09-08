@@ -115,6 +115,7 @@ final class Bento_Core {
 	private function bento_load_dependencies() {
 		require_once BENTO_GRID_PATH . 'includes/class-bento-i18n.php';
 		require_once BENTO_GRID_PATH . 'includes/class-bento-assets.php';
+		require_once BENTO_GRID_PATH . 'includes/class-bento-gutenberg.php';
 	}
 
 	/**
@@ -123,23 +124,9 @@ final class Bento_Core {
 	private function bento_register_hooks() {
 		new Bento_I18n();
 		new Bento_Assets();
+		new Bento_Gutenberg();
 
-		add_action( 'init', array( $this, 'bento_register_block' ) );
 		add_action( 'elementor/widgets/register', array( $this, 'bento_register_elementor_widget' ) );
-	}
-
-	/**
-	 * Registers the Bento Grid Gutenberg block.
-	 */
-	public function bento_register_block() {
-		$block_json_path = BENTO_GRID_PATH . 'block.json';
-
-		if ( ! file_exists( $block_json_path ) ) {
-			error_log( 'Bento Grid: block.json not found at ' . $block_json_path );
-			return;
-		}
-
-		register_block_type( $block_json_path );
 	}
 
 	/**
