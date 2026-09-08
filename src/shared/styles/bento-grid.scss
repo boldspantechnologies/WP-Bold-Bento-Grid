@@ -21,9 +21,24 @@
 .bento-grid__tile {
 	@apply bento-relative bento-overflow-hidden bento-rounded-bento-lg bento-bg-bento-surface bento-border bento-border-bento-border;
 
+	--bento-tilt-x: 0deg;
+	--bento-tilt-y: 0deg;
+	--bento-tilt-scale: 1;
+
 	aspect-ratio: var( --bento-aspect-ratio );
 	grid-column: span 1;
 	grid-row: span 1;
+	transform: perspective( 800px ) rotateX( var( --bento-tilt-x ) ) rotateY( var( --bento-tilt-y ) )
+		scale( var( --bento-tilt-scale ) );
+	transition: transform 150ms ease-out;
+	will-change: transform;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.bento-grid__tile {
+		transform: none;
+		transition: none;
+	}
 }
 
 /**
