@@ -42,6 +42,7 @@ class Bento_Elementor {
 		}
 
 		$message = sprintf(
+			/* translators: %s: minimum required Elementor version. */
 			esc_html__( 'Bold Bento Grid requires Elementor %s or higher. Please update Elementor to use the Bento Grid widget.', 'bold-bento-grid' ),
 			esc_html( self::MIN_ELEMENTOR_VERSION )
 		);
