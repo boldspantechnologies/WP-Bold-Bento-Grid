@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "bold-bento/grid",
+  "title": "Bento Grid",
+  "category": "design",
+  "icon": "grid-view",
+  "description": "A minimal, modern Bento-style grid layout block.",
+  "keywords": [ "bento", "grid", "layout" ],
+  "version": "0.1.0",
+  "textdomain": "bento-grid",
+  "editorScript": "bento-grid-block-editor-script",
+  "editorStyle": "bento-grid-block-editor-style",
+  "style": "bento-grid-block-style",
+  "viewScript": "bento-grid-block-view-script",
+  "attributes": {
+    "columns": {
+      "type": "number",
+      "default": 3
+    },
+    "gap": {
+      "type": "number",
+      "default": 16
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": [ "wide", "full" ]
+  }
+}

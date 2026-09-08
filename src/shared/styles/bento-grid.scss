@@ -1,0 +1,70 @@
+/**
+ * Bento Grid — shared CSS Grid layout engine.
+ *
+ * Single source of truth for the grid structure consumed by both the
+ * Gutenberg block (save.tsx output) and the Elementor widget render(),
+ * per AGENT.md 7 (unified HTML wrapper / data-* attributes).
+ */
+
+.bento-grid {
+	--bento-columns: 3;
+	--bento-gap: 1rem;
+	--bento-aspect-ratio: 1 / 1;
+
+	@apply bento-grid bento-w-full;
+
+	display: grid;
+	grid-template-columns: repeat( var( --bento-columns ), minmax( 0, 1fr ) );
+	gap: var( --bento-gap );
+}
+
+.bento-grid__tile {
+	@apply bento-relative bento-overflow-hidden bento-rounded-bento-lg bento-bg-bento-surface bento-border bento-border-bento-border;
+
+	aspect-ratio: var( --bento-aspect-ratio );
+	grid-column: span 1;
+	grid-row: span 1;
+}
+
+/**
+ * Masonry-style spanned tile variations.
+ */
+.bento-tile-featured {
+	grid-column: span 2;
+	grid-row: span 2;
+
+	--bento-aspect-ratio: auto;
+}
+
+.bento-tile-wide {
+	grid-column: span 2;
+	grid-row: span 1;
+
+	--bento-aspect-ratio: 2 / 1;
+}
+
+.bento-tile-tall {
+	grid-column: span 1;
+	grid-row: span 2;
+
+	--bento-aspect-ratio: 1 / 2;
+}
+
+/**
+ * Collapse to a single fluid column on mobile. Spanned tiles fall back
+ * to a single column/row so the layout stays legible on small screens.
+ */
+@media ( max-width: 767px ) {
+	.bento-grid {
+		--bento-columns: 1;
+	}
+
+	.bento-tile-featured,
+	.bento-tile-wide,
+	.bento-tile-tall {
+		grid-column: span 1;
+		grid-row: span 1;
+
+		--bento-aspect-ratio: auto;
+	}
+}
