@@ -69,6 +69,4 @@ Keep the DOM footprint minimal. Avoid deep div nesting to protect Core Web Vital
 Always assume the current working directory is the Lite MVP.
 
 
-donot build any pro or locked featured now no hooks or filters too we will first add to wp.org then only we wil ladd in other versions.
-
 If asked to build a premium feature (like dynamic queries or Framer Motion 3D effects), prepare the hook using apply_filters( 'bento_grid_is_pro', false ) so the Pro plugin can securely intercept it later.

@@ -1,8 +1,3 @@
-/**
- * Shared types and constants used by both the Gutenberg block and the
- * Elementor widget, keeping their HTML output/data-* attributes in sync.
- */
-
 import './scripts/bento-runtime';
 
 export const BENTO_GRID_ATTR_PREFIX = 'data-bento-grid';

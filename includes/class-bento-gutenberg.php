@@ -1,51 +1,21 @@
 <?php
-/**
- * Gutenberg block registration and server-render fallback.
- *
- * @package Bento_Grid
- */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit;
 }
 
-/**
- * Class Bento_Gutenberg
- *
- * Registers the `bold-bento/grid` block from block.json and provides a
- * render_callback that guarantees valid, escaped markup on the frontend
- * even in the rare case the block's static save() content is missing
- * (e.g. a corrupted/edited post_content), rebuilding the exact same
- * `.bento-grid-wrapper > .bento-grid` structure emitted by save.tsx, per
- * AGENT.md 7 (single source of truth for frontend DOM/CSS).
- */
 class Bento_Gutenberg {
 
-	/**
-	 * Minimum allowed grid column count, mirrored from the editor's
-	 * RangeControl bounds in src/blocks/edit.tsx.
-	 *
-	 * @var int
-	 */
 	const MIN_COLUMNS = 2;
 
-	/**
-	 * Maximum allowed grid column count.
-	 *
-	 * @var int
-	 */
 	const MAX_COLUMNS = 4;
 
-	/**
-	 * Constructor. Wires block registration to the 'init' hook.
-	 */
+	const EDITOR_SCRIPT_HANDLE = 'bento-grid-block-editor-script';
+
 	public function __construct() {
 		add_action( 'init', array( $this, 'bento_register_block' ) );
 	}
 
-	/**
-	 * Registers the Bento Grid block from its block.json metadata.
-	 */
 	public function bento_register_block() {
 		$block_json_path = BENTO_GRID_PATH . 'block.json';
 
@@ -53,6 +23,8 @@ class Bento_Gutenberg {
 			error_log( 'Bento Grid: block.json not found at ' . $block_json_path );
 			return;
 		}
+
+		$this->bento_register_editor_script();
 
 		$register_args = array(
 			'render_callback' => array( $this, 'bento_render_block' ),
@@ -63,23 +35,35 @@ class Bento_Gutenberg {
 			return;
 		}
 
-		// Older WordPress versions: register_block_type() itself accepts
-		// a metadata directory/file path as a fallback.
 		register_block_type( $block_json_path, $register_args );
 	}
 
-	/**
-	 * Server-side render callback for the Bento Grid block.
-	 *
-	 * Under normal operation this simply returns the already-correct
-	 * markup produced by save.tsx (passed in as $content). If that
-	 * content is ever empty, it rebuilds the same wrapper structure
-	 * server-side from sanitized attributes as a defensive fallback.
-	 *
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block save() output (inner HTML).
-	 * @return string
-	 */
+	private function bento_register_editor_script() {
+		$editor_script_path = BENTO_GRID_PATH . 'build/index.js';
+
+		if ( ! file_exists( $editor_script_path ) ) {
+			error_log( 'Bento Grid: build/index.js not found; run npm run build.' );
+			return;
+		}
+
+		$asset_file_path = BENTO_GRID_PATH . 'build/index.asset.php';
+
+		$asset = file_exists( $asset_file_path )
+			? require $asset_file_path
+			: array(
+				'dependencies' => array(),
+				'version'      => BENTO_GRID_VERSION,
+			);
+
+		wp_register_script(
+			self::EDITOR_SCRIPT_HANDLE,
+			BENTO_GRID_URL . 'build/index.js',
+			$asset['dependencies'],
+			$asset['version'],
+			true
+		);
+	}
+
 	public function bento_render_block( $attributes, $content ) {
 		if ( ! empty( $content ) ) {
 			return $content;
@@ -88,13 +72,6 @@ class Bento_Gutenberg {
 		return $this->bento_render_fallback_markup( $attributes );
 	}
 
-	/**
-	 * Rebuilds the block's wrapper markup from sanitized attributes when
-	 * no saved content is available.
-	 *
-	 * @param array $attributes Block attributes.
-	 * @return string
-	 */
 	private function bento_render_fallback_markup( $attributes ) {
 		$columns = isset( $attributes['columns'] ) ? absint( $attributes['columns'] ) : self::MIN_COLUMNS + 1;
 		$columns = max( self::MIN_COLUMNS, min( self::MAX_COLUMNS, $columns ) );

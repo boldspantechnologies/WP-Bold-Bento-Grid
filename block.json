@@ -10,9 +10,8 @@
   "version": "0.1.0",
   "textdomain": "bento-grid",
   "editorScript": "bento-grid-block-editor-script",
-  "editorStyle": "bento-grid-block-editor-style",
-  "style": "bento-grid-block-style",
-  "viewScript": "bento-grid-block-view-script",
+  "style": "bento-grid-frontend-style",
+  "viewScript": "bento-grid-frontend-script",
   "attributes": {
     "columns": {
       "type": "number",

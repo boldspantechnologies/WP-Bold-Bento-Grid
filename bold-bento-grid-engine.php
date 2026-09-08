@@ -9,12 +9,10 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       bento-grid
- *
- * @package Bento_Grid
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
+	exit;
 }
 
 define( 'BENTO_GRID_VERSION', '0.1.0' );

@@ -24,21 +24,12 @@ export interface BentoGridBlockAttributes {
 	preset: string;
 }
 
-/**
- * Gap presets exposed in the editor. Values are stored in pixels on the
- * `gap` attribute and consumed by the shared SCSS via --bento-gap.
- */
 const BENTO_GAP_PRESETS = [
 	{ label: __( 'Compact', 'bento-grid' ), value: 8 },
 	{ label: __( 'Comfortable', 'bento-grid' ), value: 16 },
 	{ label: __( 'Spacious', 'bento-grid' ), value: 24 },
 ];
 
-/**
- * Layout presets bundle a column count + gap combination behind a single
- * click, mirroring the quick-start presets common in Vercel/Stripe-style
- * builder UIs.
- */
 const BENTO_LAYOUT_PRESETS: Array< {
 	name: string;
 	label: string;
@@ -65,10 +56,6 @@ const BENTO_LAYOUT_PRESETS: Array< {
 	},
 ];
 
-/**
- * Default tile template: three Group blocks pre-classed as bento tiles,
- * each a free drop zone for images, text, or custom blocks.
- */
 const BENTO_TILE_TEMPLATE: TemplateArray = [
 	[
 		'core/group',
