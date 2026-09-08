@@ -19,8 +19,7 @@
     "paths": {
       "@shared/*": [ "src/shared/*" ],
       "@blocks/*": [ "src/blocks/*" ]
-    },
-    "types": [ "@wordpress/scripts" ]
+    }
   },
   "include": [ "src" ],
   "exclude": [ "node_modules", "build" ]

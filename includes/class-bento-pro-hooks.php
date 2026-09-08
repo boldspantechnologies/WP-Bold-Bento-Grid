@@ -40,86 +40,53 @@ class Bento_Pro_Hooks {
 			return;
 		}
 
+		$locked_presets = array(
+			__( 'Glassmorphism 8-tile', 'bold-bento-grid' ),
+			__( 'WooCommerce Auto-Fetch Grid', 'bold-bento-grid' ),
+			__( 'Interactive Product Bento', 'bold-bento-grid' ),
+		);
+
+		$items = '';
+		foreach ( $locked_presets as $preset ) {
+			$items .= sprintf( '<li>🔒 %s</li>', esc_html( $preset ) );
+		}
+
+		$pro_url = esc_url( apply_filters( 'bento_grid_pro_url', 'https://boldspantechnologies.com/bento-grid-pro' ) );
+
 		$element->add_control(
 			'bento_pro_upsell_notice',
 			array(
 				'type'            => Controls_Manager::RAW_HTML,
 				'raw'             => sprintf(
-					'<div class="bento-pro-upsell-notice">%s</div>',
-					wp_kses_post(
-						sprintf(
-							__( '🔒 More layout presets, dynamic queries, and 3D tilt effects are available in %s.', 'bento-grid' ),
-							'<strong>Bento Grid Pro</strong>'
-						)
-					)
+					'<div class="bento-pro-upsell-notice"><p><strong>%1$s</strong></p><ul>%2$s</ul><p><a href="%3$s" target="_blank" rel="noopener noreferrer">%4$s</a></p></div>',
+					esc_html__( 'Unlock 6+ Tile Layouts, Glassmorphism, Dynamic Product Grids, & Hover Animations in Bento Grid Pro', 'bold-bento-grid' ),
+					$items,
+					$pro_url,
+					esc_html__( 'Explore Bento Grid Pro →', 'bold-bento-grid' )
 				),
 				'content_classes' => 'bento-pro-upsell-notice-wrap',
 			)
 		);
 	}
 
+	/**
+	 * Expose the Pro state to the block editor. The Lite grid block reads
+	 * `window.bentoGridPro` to decide whether to show its locked-tile guardrail,
+	 * locked-preset previews, and upsell modal.
+	 */
 	public function bento_enqueue_editor_upsell() {
-		if ( self::bento_is_pro() ) {
-			return;
-		}
-
 		if ( ! wp_script_is( self::EDITOR_SCRIPT_HANDLE, 'registered' ) ) {
-			error_log( 'Bento Grid: editor script handle "' . self::EDITOR_SCRIPT_HANDLE . '" not registered; Pro upsell badge skipped.' );
+			error_log( 'Bento Grid: editor script handle "' . self::EDITOR_SCRIPT_HANDLE . '" not registered; Pro config skipped.' );
 			return;
 		}
 
-		$notice_text = esc_js(
-			__( 'Unlock layout presets, dynamic queries, and 3D tilt effects with Bento Grid Pro.', 'bento-grid' )
+		wp_localize_script(
+			self::EDITOR_SCRIPT_HANDLE,
+			'bentoGridPro',
+			array(
+				'isPro' => self::bento_is_pro(),
+				'url'   => esc_url_raw( apply_filters( 'bento_grid_pro_url', 'https://boldspantechnologies.com/bento-grid-pro' ) ),
+			)
 		);
-		$panel_title = esc_js( __( 'Bento Pro', 'bento-grid' ) );
-		$block_name  = esc_js( 'bold-bento/grid' );
-
-		$inline_script = <<<JS
-( function( wp ) {
-	if ( ! wp || ! wp.hooks || ! wp.element || ! wp.blockEditor || ! wp.components ) {
-		return;
-	}
-
-	var addFilter = wp.hooks.addFilter;
-	var createElement = wp.element.createElement;
-	var Fragment = wp.element.Fragment;
-	var InspectorControls = wp.blockEditor.InspectorControls;
-	var PanelBody = wp.components.PanelBody;
-	var Notice = wp.components.Notice;
-
-	addFilter(
-		'editor.BlockEdit',
-		'bento-grid/pro-upsell-badge',
-		function ( BlockEdit ) {
-			return function ( props ) {
-				if ( props.name !== '{$block_name}' ) {
-					return createElement( BlockEdit, props );
-				}
-
-				return createElement(
-					Fragment,
-					{},
-					createElement( BlockEdit, props ),
-					createElement(
-						InspectorControls,
-						{},
-						createElement(
-							PanelBody,
-							{ title: '{$panel_title}', initialOpen: false, icon: 'lock' },
-							createElement(
-								Notice,
-								{ status: 'info', isDismissible: false },
-								'{$notice_text}'
-							)
-						)
-					)
-				);
-			};
-		}
-	);
-} )( window.wp );
-JS;
-
-		wp_add_inline_script( self::EDITOR_SCRIPT_HANDLE, $inline_script );
 	}
 }

@@ -32,21 +32,21 @@ class Bento_Rest_Api {
 	private function bento_get_collection_args() {
 		return array(
 			'post_type'      => array(
-				'description'       => __( 'Post type to query.', 'bento-grid' ),
+				'description'       => __( 'Post type to query.', 'bold-bento-grid' ),
 				'type'              => 'string',
 				'default'           => 'post',
 				'sanitize_callback' => 'sanitize_key',
 				'validate_callback' => array( $this, 'bento_validate_post_type' ),
 			),
 			'posts_per_page' => array(
-				'description'       => __( 'Number of posts to return.', 'bento-grid' ),
+				'description'       => __( 'Number of posts to return.', 'bold-bento-grid' ),
 				'type'              => 'integer',
 				'default'           => 6,
 				'sanitize_callback' => 'absint',
 				'validate_callback' => array( $this, 'bento_validate_posts_per_page' ),
 			),
 			'category'       => array(
-				'description'       => __( 'Category slug or ID to filter by.', 'bento-grid' ),
+				'description'       => __( 'Category slug or ID to filter by.', 'bold-bento-grid' ),
 				'type'              => 'string',
 				'default'           => '',
 				'sanitize_callback' => 'sanitize_text_field',
@@ -72,7 +72,7 @@ class Bento_Rest_Api {
 		if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, 'wp_rest' ) ) {
 			return new WP_Error(
 				'bento_rest_invalid_nonce',
-				__( 'A valid nonce is required to access this endpoint.', 'bento-grid' ),
+				__( 'A valid nonce is required to access this endpoint.', 'bold-bento-grid' ),
 				array( 'status' => 403 )
 			);
 		}

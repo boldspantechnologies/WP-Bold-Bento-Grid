@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "bold-bento/tile",
+  "title": "Bento Tile",
+  "category": "design",
+  "icon": "format-image",
+  "description": "A single image or content tile inside a Bento Grid.",
+  "keywords": [ "bento", "tile", "card" ],
+  "version": "1.0.0",
+  "textdomain": "bold-bento-grid",
+  "parent": [ "bold-bento/grid" ],
+  "editorScript": "bento-grid-block-editor-script",
+  "style": "bento-grid-frontend-style",
+  "viewScript": "bento-grid-frontend-script",
+  "attributes": {
+    "contentMode": {
+      "type": "string",
+      "default": "image-overlay"
+    },
+    "mediaUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "mediaId": {
+      "type": "number",
+      "default": 0
+    },
+    "mediaAlt": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "caption": {
+      "type": "string",
+      "default": ""
+    },
+    "linkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 40
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "lift"
+    },
+    "bgColor": {
+      "type": "string",
+      "default": ""
+    },
+    "bgGradient": {
+      "type": "string",
+      "default": ""
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderWidth": {
+      "type": "number",
+      "default": 0
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "reusable": false
+  }
+}

@@ -3,3 +3,698 @@
 @tailwind utilities;
 
 @import '../shared/styles/bento-grid.scss';
+
+/* =============================================================================
+ * Bold Bento Grid — CSS Grid engine
+ *
+ * `[data-bento-grid]` sits on the block wrapper and carries the active preset
+ * as its value (e.g. `data-bento-grid="hero-3"`) plus the `--bento-*` props.
+ *
+ * Front end : the wrapper itself is the grid; tiles are its direct children.
+ * Editor    : Gutenberg nests the tiles two levels down inside
+ *             `.block-editor-inner-blocks > .block-editor-block-list__layout`,
+ *             so the grid is moved onto that layout element and the wrapper is
+ *             kept in normal flow so block chrome keeps working.
+ * ========================================================================== */
+
+[data-bento-grid] {
+	--bento-gap: 16px;
+	--bento-radius: 16px;
+	--bento-columns: 12;
+	--bento-columns-mobile: 1;
+	--bento-columns-tablet: 2;
+	--bento-row-height: 180px;
+
+	display: grid;
+	gap: var( --bento-gap );
+	grid-template-columns: repeat( var( --bento-columns ), minmax( 0, 1fr ) );
+	grid-auto-rows: var( --bento-row-height );
+	background: var( --bento-bg-color, #f4f4f5 );
+}
+
+/* --- Gutenberg editor canvas ---------------------------------------------------
+ * Keep the block wrapper itself in normal flow (so its single child, the
+ * `.block-editor-inner-blocks` wrapper, is not squeezed into one grid cell)… */
+.wp-block-bold-bento-grid:has( > .block-editor-inner-blocks ) {
+	display: block;
+}
+
+/* …and turn the inner block list into the grid, explicitly overriding
+ * Gutenberg's own flow-layout rules. */
+.wp-block-bold-bento-grid > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: grid !important;
+	gap: var( --bento-gap ) !important;
+	grid-template-columns: repeat( var( --bento-columns ), 1fr ) !important;
+	grid-auto-rows: var( --bento-row-height );
+	background: var( --bento-bg-color, #f4f4f5 );
+}
+
+/* Grid items fill the cell the preset assigns them, in both contexts — and the
+ * default block-list spacing / content-width clamp Gutenberg injects is
+ * stripped so nothing offsets the grid or leaks the canvas background. */
+[data-bento-grid] > *,
+.wp-block-bold-bento-grid > .block-editor-inner-blocks > .block-editor-block-list__layout > * {
+	min-width: 0;
+	min-height: 0;
+	margin: 0 !important;
+	max-width: none !important;
+}
+
+.wp-block-bold-bento-tile {
+	width: 100% !important;
+	height: 100% !important;
+	border-radius: var( --bento-radius, 16px );
+}
+
+/* The block appender stays below the grid, spanning the full width. */
+.wp-block-bold-bento-grid
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout
+	> .block-list-appender {
+	grid-column: 1 / -1 !important;
+}
+
+/* -----------------------------------------------------------------------------
+ * Layout presets
+ *
+ * Each entry: `rows` / optional `columns` are track templates; `tiles` is an
+ * ordered list of `( grid-column  grid-row )` pairs applied by child index.
+ * -------------------------------------------------------------------------- */
+
+$bento-row-1: 'var(--bento-row-height, 180px)';
+$bento-row-2: 'repeat(2, var(--bento-row-height, 180px))';
+
+$bento-presets: (
+	/* 2 tiles — even halves. */
+	'split-2': (
+		'columns': 'repeat(2, minmax(0, 1fr))',
+		'rows': $bento-row-1,
+	),
+
+	/* 2 tiles — 70 / 30 split. */
+	'asymmetric-2': (
+		'columns': 'repeat(10, minmax(0, 1fr))',
+		'rows': $bento-row-1,
+		'tiles': (
+			( '1 / 8' '1 / 2' ),
+			( '8 / 11' '1 / 2' ),
+		),
+	),
+
+	/* 3 tiles — one hero left, two stacked right. */
+	'hero-3': (
+		'rows': $bento-row-2,
+		'tiles': (
+			( '1 / 8' '1 / 3' ),
+			( '8 / 13' '1 / 2' ),
+			( '8 / 13' '2 / 3' ),
+		),
+	),
+
+	/* 3 tiles — three equal columns. */
+	'triple-row-3': (
+		'columns': 'repeat(3, minmax(0, 1fr))',
+		'rows': $bento-row-1,
+	),
+
+	/* 4 tiles — wide banner, tall rail, two halves below. */
+	'showcase-4': (
+		'rows': $bento-row-2,
+		'tiles': (
+			( '1 / 9' '1 / 2' ),
+			( '9 / 13' '1 / 3' ),
+			( '1 / 5' '2 / 3' ),
+			( '5 / 9' '2 / 3' ),
+		),
+	),
+
+	/* 4 tiles — even 2 x 2. */
+	'balanced-4': (
+		'rows': $bento-row-2,
+		'tiles': (
+			( '1 / 7' '1 / 2' ),
+			( '7 / 13' '1 / 2' ),
+			( '1 / 7' '2 / 3' ),
+			( '7 / 13' '2 / 3' ),
+		),
+	),
+
+	/* 5 tiles — one feature left, four in a 2 x 2 to the right. */
+	'feature-5': (
+		'rows': $bento-row-2,
+		'tiles': (
+			( '1 / 7' '1 / 3' ),
+			( '7 / 10' '1 / 2' ),
+			( '10 / 13' '1 / 2' ),
+			( '7 / 10' '2 / 3' ),
+			( '10 / 13' '2 / 3' ),
+		),
+	),
+
+	/* 5 tiles — tall feature left, wide banner top-right, strip of three below. */
+	'asymmetric-5': (
+		'rows': $bento-row-2,
+		'tiles': (
+			( '1 / 7' '1 / 3' ),
+			( '7 / 13' '1 / 2' ),
+			( '7 / 9' '2 / 3' ),
+			( '9 / 11' '2 / 3' ),
+			( '11 / 13' '2 / 3' ),
+		),
+	),
+
+	/* 5 tiles — equal columns, single row. */
+	'strip-5': (
+		'columns': 'repeat(5, minmax(0, 1fr))',
+		'rows': 'var(--bento-row-height, 180px)',
+	),
+);
+
+@each $name, $preset in $bento-presets {
+	$fe: '[data-bento-grid="#{$name}"]';
+	$ed: '#{$fe} > .block-editor-inner-blocks > .block-editor-block-list__layout';
+	$columns: map-get( $preset, 'columns' );
+	$rows: map-get( $preset, 'rows' );
+	$tiles: map-get( $preset, 'tiles' );
+
+	#{$fe},
+	#{$ed} {
+		@if $columns {
+			grid-template-columns: #{$columns} !important;
+		}
+
+		@if $rows {
+			grid-template-rows: #{$rows} !important;
+		}
+	}
+
+	@if $tiles {
+		@for $i from 1 through length( $tiles ) {
+			$tile: nth( $tiles, $i );
+
+			#{$fe} > *:nth-child( #{$i} ),
+			#{$ed} > *:nth-child( #{$i} ) {
+				grid-column: #{ nth( $tile, 1 ) };
+				grid-row: #{ nth( $tile, 2 ) };
+			}
+		}
+	}
+}
+
+/* =============================================================================
+ * Responsive breakpoints
+ *
+ * Every rule targets BOTH grid hosts so the editor canvas matches the page:
+ *   • front end : `[data-bento-grid]` (the `.wp-block-bold-bento-grid` element)
+ *   • editor    : `.wp-block-bold-bento-grid > .block-editor-inner-blocks
+ *                  > .block-editor-block-list__layout`
+ * ========================================================================== */
+
+/* --- Mobile — under 768px ----------------------------------------------------
+ * Every preset (2–5 tiles) collapses to one vertical column and all tile spans
+ * reset to `auto`. */
+@media ( max-width: 767.98px ) {
+	[data-bento-grid],
+	.wp-block-bold-bento-grid > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		grid-template-columns: repeat( var( --bento-columns-mobile, 1 ), minmax( 0, 1fr ) ) !important;
+		grid-template-rows: none !important;
+		grid-auto-rows: minmax( var( --bento-row-height, 180px ), auto ) !important;
+	}
+
+	[data-bento-grid] > *,
+	.wp-block-bold-bento-grid > .block-editor-inner-blocks > .block-editor-block-list__layout > * {
+		grid-column: auto !important;
+		grid-row: auto !important;
+	}
+}
+
+/* --- Tablet — 768px to 1024px ----------------------------------------------
+ * 4- and 5-tile presets step down to two columns; the odd 5th tile spans the
+ * full width so nothing is left stranded at half width. 2- and 3-tile presets
+ * keep their desktop geometry. */
+@media ( min-width: 768px ) and ( max-width: 1024px ) {
+	@each $name in ( 'showcase-4', 'balanced-4', 'feature-5', 'asymmetric-5', 'strip-5' ) {
+		[data-bento-grid='#{$name}'],
+		[data-bento-grid='#{$name}'] > .block-editor-inner-blocks > .block-editor-block-list__layout {
+			grid-template-columns: repeat(
+				var( --bento-columns-tablet, 2 ),
+				minmax( 0, 1fr )
+			) !important;
+			grid-template-rows: none !important;
+			grid-auto-rows: minmax( var( --bento-row-height, 180px ), auto ) !important;
+		}
+
+		[data-bento-grid='#{$name}'] > *,
+		[data-bento-grid='#{$name}']
+			> .block-editor-inner-blocks
+			> .block-editor-block-list__layout
+			> * {
+			grid-column: auto !important;
+			grid-row: auto !important;
+		}
+	}
+
+	@each $name in ( 'feature-5', 'asymmetric-5', 'strip-5' ) {
+		[data-bento-grid='#{$name}'] > *:nth-child( 5 ),
+		[data-bento-grid='#{$name}']
+			> .block-editor-inner-blocks
+			> .block-editor-block-list__layout
+			> *:nth-child( 5 ) {
+			grid-column: 1 / -1 !important;
+		}
+	}
+}
+
+/* =============================================================================
+ * CSS isolation — `.bold-bento-wrapper` namespace
+ *
+ * Re-asserts the grid-gap, tile-padding and tile-typography rules the block
+ * owns — scoped and `!important` — so an active WordPress theme or Elementor's
+ * global styles cannot override them. `.bold-bento-wrapper` is the grid wrapper
+ * element itself (it also carries `[data-bento-grid]` / `.wp-block-bold-bento-grid`).
+ * ========================================================================== */
+
+.bold-bento-wrapper,
+.bold-bento-wrapper *,
+.bold-bento-wrapper *::before,
+.bold-bento-wrapper *::after {
+	box-sizing: border-box;
+}
+
+/* Grid gap — front-end wrapper + editor list container. */
+.bold-bento-wrapper[data-bento-grid],
+.bold-bento-wrapper.wp-block-bold-bento-grid
+	> .block-editor-inner-blocks
+	> .block-editor-block-list__layout {
+	gap: var( --bento-gap, 16px ) !important;
+}
+
+/* Tile padding. */
+.bold-bento-wrapper .bento-tile__body {
+	padding: 16px !important;
+}
+
+.bold-bento-wrapper .bento-tile__custom {
+	padding: 12px !important;
+}
+
+/* Tile typography — neutralise theme inheritance, then re-assert the block's. */
+.bold-bento-wrapper .bento-tile__title,
+.bold-bento-wrapper .bento-tile__caption {
+	margin: 0;
+	padding: 0;
+	font-family: inherit;
+	color: inherit;
+	letter-spacing: normal;
+	text-transform: none;
+	text-align: left;
+}
+
+.bold-bento-wrapper .bento-tile__title {
+	font-size: 1rem !important;
+	font-weight: 600 !important;
+	line-height: 1.3 !important;
+}
+
+.bold-bento-wrapper .bento-tile__caption {
+	margin-top: 4px !important;
+	font-size: 0.8125rem !important;
+	font-weight: 400 !important;
+	line-height: 1.4 !important;
+}
+
+/* Media — beat theme / Elementor `img` display + sizing rules. */
+.bold-bento-wrapper .bento-tile__img {
+	display: block !important;
+	width: 100% !important;
+	height: 100% !important;
+	max-width: none !important;
+	margin: 0 !important;
+	object-fit: cover;
+}
+
+/* Links inside tiles must not inherit theme link decoration / focus shadow. */
+.bold-bento-wrapper .bento-tile__link {
+	color: inherit;
+	text-decoration: none;
+	box-shadow: none;
+}
+
+/* -----------------------------------------------------------------------------
+ * Editor only — the layout-preset picker rendered in the block Inspector.
+ * Each thumbnail is a mini CSS grid that mirrors the real preset geometry.
+ * -------------------------------------------------------------------------- */
+
+.bento-preset-picker {
+	display: grid;
+	grid-template-columns: repeat( 2, 1fr );
+	gap: 8px;
+	margin-bottom: 12px;
+}
+
+.bento-preset-picker__option {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 8px;
+	background: transparent;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.bento-preset-picker__option:hover {
+	border-color: #b0b0b0;
+}
+
+.bento-preset-picker__option.is-active {
+	border-color: var( --wp-admin-theme-color, #3858e9 );
+	box-shadow: inset 0 0 0 1px var( --wp-admin-theme-color, #3858e9 );
+}
+
+.bento-preset-picker__preview {
+	display: grid;
+	gap: 3px;
+	width: 100%;
+	height: 44px;
+	color: #1e1e1e;
+}
+
+.bento-preset-picker__cell {
+	background: currentColor;
+	opacity: 0.22;
+	border-radius: 2px;
+}
+
+.bento-preset-picker__option.is-active .bento-preset-picker__cell {
+	opacity: 0.5;
+}
+
+.bento-preset-picker__label {
+	font-size: 11px;
+	line-height: 1.2;
+	text-align: center;
+	color: #1e1e1e;
+}
+
+.bento-preset-picker__hint {
+	margin: 0;
+	font-size: 12px;
+	font-style: italic;
+	color: #757575;
+}
+
+.bento-tile__mode-control {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+/* -----------------------------------------------------------------------------
+ * Editor only — Pro upsell & guardrails.
+ * -------------------------------------------------------------------------- */
+
+.bento-pro-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	padding: 1px 6px;
+	border-radius: 999px;
+	background: linear-gradient( 135deg, #6366f1, #ec4899 );
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.bento-pro-range__locked {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	margin: -4px 0 4px;
+	padding: 6px 8px;
+	border: 1px dashed #d0a2e8;
+	border-radius: 6px;
+	background: repeating-linear-gradient(
+		45deg,
+		rgba( 99, 102, 241, 0.06 ),
+		rgba( 99, 102, 241, 0.06 ) 6px,
+		transparent 6px,
+		transparent 12px
+	);
+	cursor: pointer;
+}
+
+.bento-pro-range__steps {
+	display: flex;
+	gap: 10px;
+	color: #9b7fc4;
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+}
+
+.bento-pro-presets {
+	margin-top: 14px;
+	padding-top: 12px;
+	border-top: 1px solid #e0e0e0;
+}
+
+.bento-pro-presets__title {
+	margin: 0 0 8px;
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #757575;
+}
+
+.bento-pro-presets__grid {
+	display: grid;
+	grid-template-columns: repeat( 2, 1fr );
+	gap: 8px;
+}
+
+.bento-pro-presets__option {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 8px;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	background: transparent;
+	cursor: pointer;
+	filter: grayscale( 1 );
+	opacity: 0.75;
+}
+
+.bento-pro-presets__option:hover {
+	filter: grayscale( 0.4 );
+	opacity: 1;
+}
+
+.bento-pro-presets__label {
+	font-size: 11px;
+	line-height: 1.2;
+	text-align: center;
+	color: #1e1e1e;
+}
+
+.bento-pro-presets__lock {
+	position: absolute;
+	top: 6px;
+	right: 8px;
+	font-size: 12px;
+}
+
+.bento-pro-modal {
+	max-width: 460px;
+}
+
+.bento-pro-modal__copy {
+	margin: 0 0 12px;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.4;
+}
+
+.bento-pro-modal__list {
+	margin: 0 0 18px;
+	padding-left: 18px;
+	font-size: 13px;
+	line-height: 1.7;
+	color: #444;
+}
+
+.bento-pro-modal__actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+/* -----------------------------------------------------------------------------
+ * Bento Tile — child block (front end + editor)
+ * -------------------------------------------------------------------------- */
+
+.bento-tile {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	min-height: 160px;
+	overflow: hidden;
+	border: var( --bento-tile-border-width, 0 ) solid
+		var( --bento-tile-border-color, transparent );
+	border-radius: var( --bento-radius, 16px );
+	background: var( --bento-tile-bg, #e4e4e7 );
+	color: var( --bento-tile-text, #fff );
+	text-decoration: none;
+	transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.bento-tile__link {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	color: inherit;
+	text-decoration: none;
+}
+
+.bento-tile__media {
+	position: relative;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.bento-tile__img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.bento-tile__scrim {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient( to top, #000 0%, rgba( 0, 0, 0, 0 ) 65% );
+	pointer-events: none;
+}
+
+.bento-tile__title {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.bento-tile__caption {
+	margin: 4px 0 0;
+	font-size: 0.8125rem;
+	line-height: 1.4;
+	opacity: 0.85;
+}
+
+/* image-overlay: text is stacked on top of the media */
+.bento-mode-image-overlay {
+	display: grid;
+}
+
+.bento-mode-image-overlay .bento-tile__media,
+.bento-mode-image-overlay .bento-tile__body {
+	grid-area: 1 / 1;
+}
+
+.bento-mode-image-overlay .bento-tile__body {
+	position: relative;
+	z-index: 1;
+	align-self: end;
+	padding: 16px;
+}
+
+/* text-top / text-bottom / custom: light surface, text in normal flow */
+.bento-mode-text-top,
+.bento-mode-text-bottom,
+.bento-mode-custom-blocks {
+	background: var( --bento-tile-bg, #fff );
+	color: var( --bento-tile-text, #18181b );
+}
+
+.bento-mode-text-top .bento-tile__body,
+.bento-mode-text-bottom .bento-tile__body {
+	padding: 16px;
+}
+
+.bento-mode-text-top .bento-tile__media,
+.bento-mode-text-bottom .bento-tile__media {
+	flex: 1 1 auto;
+	min-height: 96px;
+}
+
+.bento-tile__custom {
+	flex: 1;
+	padding: 12px;
+}
+
+/* Editor: empty-state media placeholder */
+.bento-tile__placeholder.components-placeholder {
+	min-height: 160px;
+	height: 100%;
+	border: 1px dashed #c4c4c4;
+	border-radius: var( --bento-radius, 16px );
+	background: #f6f6f7;
+	box-shadow: none;
+	color: #757575;
+}
+
+.bento-tile__hint {
+	margin: 8px 0 0;
+	font-size: 12px;
+	font-style: italic;
+	color: #757575;
+}
+
+/* -----------------------------------------------------------------------------
+ * Hover micro-interactions — opt-in per tile via `.bento-hover-*`.
+ * (`.bento-hover-tilt` is driven by the JS runtime; see shared/styles.)
+ * -------------------------------------------------------------------------- */
+
+.bento-hover-lift:hover {
+	transform: translateY( -4px );
+	box-shadow: 0 14px 30px rgba( 0, 0, 0, 0.16 );
+}
+
+.bento-hover-glow:hover {
+	box-shadow: 0 0 0 1px rgba( 0, 0, 0, 0.05 ), 0 10px 34px rgba( 0, 0, 0, 0.18 );
+}
+
+.bento-hover-zoom .bento-tile__img {
+	transition: transform 300ms ease;
+}
+
+.bento-hover-zoom:hover .bento-tile__img {
+	transform: scale( 1.04 );
+}
+
+/* Accessibility — honour the OS "reduce motion" setting: no movement, no
+ * transitions on any hover effect. Colour / shadow changes still apply. */
+@media ( prefers-reduced-motion: reduce ) {
+	.bento-tile,
+	.bento-hover-zoom .bento-tile__img {
+		transition: none !important;
+	}
+
+	.bento-hover-lift,
+	.bento-hover-lift:hover,
+	.bento-hover-glow,
+	.bento-hover-glow:hover {
+		transform: none !important;
+	}
+
+	.bento-hover-zoom .bento-tile__img,
+	.bento-hover-zoom:hover .bento-tile__img {
+		transform: none !important;
+	}
+}

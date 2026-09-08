@@ -1,5 +1,7 @@
-const BENTO_WRAPPER_SELECTOR = '.bento-grid-wrapper';
-const BENTO_TILE_SELECTOR = '.bento-grid__tile';
+const BENTO_WRAPPER_SELECTOR = '[data-bento-grid]';
+
+/** Only tiles that opt in to the 3D-tilt hover effect are driven by the runtime. */
+const BENTO_TILE_SELECTOR = '.bento-hover-tilt';
 
 const BENTO_MAX_TILT_DEG = 8;
 const BENTO_HOVER_SCALE = 1.02;

@@ -1,70 +1,27 @@
-.bento-grid {
-	--bento-columns: 3;
-	--bento-gap: 1rem;
-	--bento-aspect-ratio: 1 / 1;
+/**
+ * Shared tilt interaction layer.
+ *
+ * Visual styling for the grid and the tile block lives in
+ * `src/blocks/style.scss`. This file only carries the pointer-tilt hooks that
+ * the front-end runtime (`src/shared/scripts/bento-runtime.ts`) drives through
+ * the `--bento-tilt-*` custom properties — active only on tiles that opt in
+ * with the `.bento-hover-tilt` class.
+ */
 
-	@apply bento-grid bento-w-full;
-
-	display: grid;
-	grid-template-columns: repeat( var( --bento-columns ), minmax( 0, 1fr ) );
-	gap: var( --bento-gap );
-}
-
-.bento-grid__tile {
-	@apply bento-relative bento-overflow-hidden bento-rounded-bento-lg bento-bg-bento-surface bento-border bento-border-bento-border;
-
+.bento-hover-tilt {
 	--bento-tilt-x: 0deg;
 	--bento-tilt-y: 0deg;
 	--bento-tilt-scale: 1;
 
-	aspect-ratio: var( --bento-aspect-ratio );
-	grid-column: span 1;
-	grid-row: span 1;
-	transform: perspective( 800px ) rotateX( var( --bento-tilt-x ) ) rotateY( var( --bento-tilt-y ) )
-		scale( var( --bento-tilt-scale ) );
+	transform: perspective( 800px ) rotateX( var( --bento-tilt-x ) )
+		rotateY( var( --bento-tilt-y ) ) scale( var( --bento-tilt-scale ) );
 	transition: transform 150ms ease-out;
 	will-change: transform;
 }
 
 @media ( prefers-reduced-motion: reduce ) {
-	.bento-grid__tile {
+	.bento-hover-tilt {
 		transform: none;
 		transition: none;
-	}
-}
-
-.bento-tile-featured {
-	grid-column: span 2;
-	grid-row: span 2;
-
-	--bento-aspect-ratio: auto;
-}
-
-.bento-tile-wide {
-	grid-column: span 2;
-	grid-row: span 1;
-
-	--bento-aspect-ratio: 2 / 1;
-}
-
-.bento-tile-tall {
-	grid-column: span 1;
-	grid-row: span 2;
-
-	--bento-aspect-ratio: 1 / 2;
-}
-
-@media ( max-width: 767px ) {
-	.bento-grid {
-		--bento-columns: 1;
-	}
-
-	.bento-tile-featured,
-	.bento-tile-wide,
-	.bento-tile-tall {
-		grid-column: span 1;
-		grid-row: span 1;
-
-		--bento-aspect-ratio: auto;
 	}
 }

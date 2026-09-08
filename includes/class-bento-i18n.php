@@ -12,7 +12,7 @@ class Bento_I18n {
 
 	public function bento_load_textdomain() {
 		load_plugin_textdomain(
-			'bento-grid',
+			'bold-bento-grid',
 			false,
 			dirname( plugin_basename( BENTO_GRID_FILE ) ) . '/languages'
 		);

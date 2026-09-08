@@ -42,7 +42,7 @@ class Bento_Elementor {
 		}
 
 		$message = sprintf(
-			esc_html__( 'Bold Bento Grid requires Elementor %s or higher. Please update Elementor to use the Bento Grid widget.', 'bento-grid' ),
+			esc_html__( 'Bold Bento Grid requires Elementor %s or higher. Please update Elementor to use the Bento Grid widget.', 'bold-bento-grid' ),
 			esc_html( self::MIN_ELEMENTOR_VERSION )
 		);
 
@@ -54,7 +54,7 @@ class Bento_Elementor {
 
 	public function bento_register_category( $elements_manager ) {
 		$category_args = array(
-			'title' => esc_html__( 'Bento Engine', 'bento-grid' ),
+			'title' => esc_html__( 'Bento Engine', 'bold-bento-grid' ),
 			'icon'  => 'eicon-gallery-grid',
 		);
 
@@ -102,8 +102,8 @@ class Bento_Elementor {
 
 		require_once $widget_class_file;
 
-		if ( class_exists( 'Bento_Widget' ) ) {
-			$widgets_manager->register( new Bento_Widget() );
+		if ( class_exists( 'Bold_Bento_Elementor_Widget' ) ) {
+			$widgets_manager->register( new Bold_Bento_Elementor_Widget() );
 		}
 	}
 }

@@ -7,13 +7,17 @@
   "icon": "grid-view",
   "description": "A minimal, modern Bento-style grid layout block.",
   "keywords": [ "bento", "grid", "layout" ],
-  "version": "0.1.0",
-  "textdomain": "bento-grid",
+  "version": "1.0.0",
+  "textdomain": "bold-bento-grid",
   "editorScript": "bento-grid-block-editor-script",
   "style": "bento-grid-frontend-style",
   "viewScript": "bento-grid-frontend-script",
   "attributes": {
-    "columns": {
+    "layoutPreset": {
+      "type": "string",
+      "default": "hero-3"
+    },
+    "tileCount": {
       "type": "number",
       "default": 3
     },
@@ -21,9 +25,13 @@
       "type": "number",
       "default": 16
     },
-    "preset": {
+    "borderRadius": {
+      "type": "number",
+      "default": 16
+    },
+    "bgColor": {
       "type": "string",
-      "default": "balanced"
+      "default": "#f4f4f5"
     }
   },
   "supports": {
