@@ -14,7 +14,6 @@
     "lint:js": "wp-scripts lint-js",
     "lint:ts": "tsc --noEmit -p tsconfig.json",
     "packages-update": "wp-scripts packages-update",
-    "i18n": "gulp pot",
     "package": "gulp package",
     "plugin-zip": "gulp package"
   },
@@ -30,7 +29,6 @@
     "del": "^6.1.1",
     "gulp": "^5.0.1",
     "gulp-zip": "^5.1.0",
-    "typescript": "^5.4.5",
-    "wp-pot": "^1.10.2"
+    "typescript": "^5.4.5"
   }
 }

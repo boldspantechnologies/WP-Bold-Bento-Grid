@@ -1,6 +1,6 @@
 === Bold Bento Grid ===
 Contributors: boldspantechnologies
-Tags: bento, grid, layout, gutenberg, elementor
+Tags: bento, grid, layout, columns, gallery, design
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -53,7 +53,7 @@ Choose a curated preset, drop in your tiles, and the grid takes care of the geom
 
 = How many tiles can a grid have? =
 
-Two to five. Larger layouts (6+ tiles), glassmorphism presets, and dynamic WooCommerce/query grids are part of Bold Bento Grid Pro — https://bentogrid.boldspan.tech.
+Two to five, with a curated preset for every count. A separate commercial add-on, Bold Bento Grid Pro (https://bentogrid.boldspan.tech), adds its own larger layouts, glassmorphism presets, and dynamic WooCommerce/query grids — this plugin is fully functional on its own without it.
 
 = Will it match my theme? =
 
@@ -81,16 +81,21 @@ No. The front-end stylesheet and runtime are only enqueued on requests that actu
 == Source Code ==
 
 This plugin ships compiled JavaScript and CSS in the `build/` directory. The
-human-readable sources (TypeScript in `src/`, SCSS, and the block metadata) are
-included in the development repository:
+human-readable sources — TypeScript and SCSS under `src/`, the block metadata,
+and the full build pipeline — live in the public development repository:
 
-https://github.com/boldspantechnologies/bold-bento-grid
+https://github.com/boldspantechnologies/Bold-Bento-Grid
 
-Build tools: [Node.js](https://nodejs.org/) with [@wordpress/scripts](https://www.npmjs.com/package/@wordpress/scripts).
+Build tools: [Node.js](https://nodejs.org/) 18+ and npm, with
+[@wordpress/scripts](https://www.npmjs.com/package/@wordpress/scripts) (webpack).
 
 * `npm install` — install the build toolchain.
-* `npm run build` — compile `src/` into `build/`.
-* `npm run package` — produce a distributable `dist/bold-bento-grid.zip`.
+* `npm run build` — compile `src/` into `build/` (`bold-bento/grid` block, tile block, front-end runtime, stylesheet).
+* `npm run package` — clean, build, and produce `dist/bold-bento-grid.zip` containing only the files WordPress needs.
+
+The text domain is `bold-bento-grid` throughout (plugin header, every `__()` /
+`_e()` call, both `block.json` files, and `wp_set_script_translations()`).
+Translations are handled by translate.wordpress.org.
 
 == Changelog ==
 

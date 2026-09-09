@@ -6,11 +6,11 @@ import {
 	useBlockProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { Button, Modal, Notice, PanelBody, RangeControl } from '@wordpress/components';
+import { Notice, PanelBody, RangeControl } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import type { BlockEditProps } from '@wordpress/blocks';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import type { CSSProperties } from 'react';
 
 type BentoTemplate = Array< [ string, Record< string, unknown >? ] >;
@@ -37,65 +37,6 @@ export function bentoGridStyle(
 		'--bento-bg-color': bentoSafeCssValue( bgColor ) || bentoGridDefaultAttributes.bgColor,
 	} as CSSProperties;
 }
-
-declare global {
-	interface Window {
-		bentoGridPro?: { isPro: boolean; url: string };
-	}
-}
-
-const BENTO_PRO_URL = 'https://bentogrid.boldspan.tech';
-
-const BENTO_PRO_COPY = __(
-	'Unlock 6+ Tile Layouts, Glassmorphism, Dynamic Product Grids, & Hover Animations in Bento Grid Pro',
-	'bold-bento-grid'
-);
-
-/** Presets that only exist in Bento Grid Pro — shown locked in Lite. */
-const BENTO_LOCKED_PRESETS = [
-	{
-		name: 'glassmorphism-8',
-		label: __( 'Glassmorphism 8', 'bold-bento-grid' ),
-		columns: 4,
-		rows: 2,
-		cells: [
-			[ 1, 2, 1, 2 ],
-			[ 2, 3, 1, 2 ],
-			[ 3, 4, 1, 2 ],
-			[ 4, 5, 1, 2 ],
-			[ 1, 2, 2, 3 ],
-			[ 2, 3, 2, 3 ],
-			[ 3, 4, 2, 3 ],
-			[ 4, 5, 2, 3 ],
-		] as Array< [ number, number, number, number ] >,
-	},
-	{
-		name: 'woo-auto-grid',
-		label: __( 'WooCommerce Auto-Fetch Grid', 'bold-bento-grid' ),
-		columns: 3,
-		rows: 2,
-		cells: [
-			[ 1, 2, 1, 2 ],
-			[ 2, 3, 1, 2 ],
-			[ 3, 4, 1, 2 ],
-			[ 1, 2, 2, 3 ],
-			[ 2, 3, 2, 3 ],
-			[ 3, 4, 2, 3 ],
-		] as Array< [ number, number, number, number ] >,
-	},
-	{
-		name: 'interactive-product-bento',
-		label: __( 'Interactive Product Bento', 'bold-bento-grid' ),
-		columns: 12,
-		rows: 2,
-		cells: [
-			[ 1, 7, 1, 3 ],
-			[ 7, 13, 1, 2 ],
-			[ 7, 10, 2, 3 ],
-			[ 10, 13, 2, 3 ],
-		] as Array< [ number, number, number, number ] >,
-	},
-];
 
 const BENTO_TILE_BLOCK_NAME = 'bold-bento/tile';
 
@@ -369,12 +310,6 @@ export default function BentoGridEdit( {
 
 	const { insertBlocks, removeBlocks } = useDispatch( blockEditorStore );
 
-	const bentoPro = typeof window !== 'undefined' ? window.bentoGridPro : undefined;
-	const isPro = Boolean( bentoPro && bentoPro.isPro );
-	const proUrl = ( bentoPro && bentoPro.url ) || BENTO_PRO_URL;
-
-	const [ proModalOpen, setProModalOpen ] = useState( false );
-
 	/**
 	 * Layout auto-adjust.
 	 *
@@ -423,15 +358,6 @@ export default function BentoGridEdit( {
 			return;
 		}
 
-		// Guardrail: 6+ tiles are a Pro feature. Dragging past 5 opens the upsell
-		// instead of committing an unsupported count.
-		if ( value > BENTO_MAX_TILES ) {
-			if ( ! isPro ) {
-				setProModalOpen( true );
-			}
-			return;
-		}
-
 		setAttributes( { tileCount: bentoClampTileCount( value ) } );
 	};
 
@@ -453,39 +379,14 @@ export default function BentoGridEdit( {
 		<>
 			<InspectorControls>
 				<PanelBody title={ __( 'Layout', 'bold-bento-grid' ) } initialOpen={ true }>
-					<div className="bento-pro-range">
-						<RangeControl
-							label={ __( 'Number of Tiles', 'bold-bento-grid' ) }
-							value={ tileCount }
-							onChange={ bentoOnChangeTileCount }
-							min={ BENTO_MIN_TILES }
-							max={ 8 }
-							step={ 1 }
-							help={
-								isPro
-									? undefined
-									: __( 'Tiles 6–8 require Bento Grid Pro.', 'bold-bento-grid' )
-							}
-						/>
-
-						{ ! isPro && (
-							<button
-								type="button"
-								className="bento-pro-range__locked"
-								onClick={ () => setProModalOpen( true ) }
-								aria-label={ __( 'Unlock 6+ tiles with Bento Grid Pro', 'bold-bento-grid' ) }
-							>
-								<span className="bento-pro-range__steps">
-									<span>6</span>
-									<span>7</span>
-									<span>8</span>
-								</span>
-								<span className="bento-pro-badge">
-									{ __( 'PRO', 'bold-bento-grid' ) } 🔒
-								</span>
-							</button>
-						) }
-					</div>
+					<RangeControl
+						label={ __( 'Number of Tiles', 'bold-bento-grid' ) }
+						value={ tileCount }
+						onChange={ bentoOnChangeTileCount }
+						min={ BENTO_MIN_TILES }
+						max={ BENTO_MAX_TILES }
+						step={ 1 }
+					/>
 
 					<BentoPresetPicker
 						value={ activePreset.name }
@@ -507,59 +408,6 @@ export default function BentoGridEdit( {
 								'bold-bento-grid'
 							) }
 						</Notice>
-					) }
-
-					{ ! isPro && (
-						<div className="bento-pro-presets">
-							<p className="bento-pro-presets__title">
-								{ __( 'Locked Pro presets', 'bold-bento-grid' ) }
-							</p>
-
-							<div className="bento-pro-presets__grid">
-								{ BENTO_LOCKED_PRESETS.map( ( preset ) => (
-									<button
-										key={ preset.name }
-										type="button"
-										className="bento-pro-presets__option"
-										onClick={ () => setProModalOpen( true ) }
-									>
-										<span
-											className="bento-preset-picker__preview bento-pro-presets__preview"
-											style={
-												{
-													gridTemplateColumns: `repeat(${ preset.columns }, 1fr)`,
-													gridTemplateRows: `repeat(${ preset.rows }, 1fr)`,
-												} as CSSProperties
-											}
-										>
-											{ preset.cells.map(
-												( [ cs, ce, rs, re ], index ) => (
-													<span
-														key={ index }
-														className="bento-preset-picker__cell"
-														style={
-															{
-																gridColumn: `${ cs } / ${ ce }`,
-																gridRow: `${ rs } / ${ re }`,
-															} as CSSProperties
-														}
-													/>
-												)
-											) }
-										</span>
-										<span className="bento-pro-presets__label">
-											{ preset.label }
-										</span>
-										<span
-											className="bento-pro-presets__lock"
-											aria-hidden="true"
-										>
-											🔒
-										</span>
-									</button>
-								) ) }
-							</div>
-						</div>
 					) }
 				</PanelBody>
 
@@ -612,32 +460,6 @@ export default function BentoGridEdit( {
 					renderAppender={ BentoNoAppender }
 				/>
 			</div>
-
-			{ proModalOpen && (
-				<Modal
-					title={ __( 'Bento Grid Pro', 'bold-bento-grid' ) }
-					onRequestClose={ () => setProModalOpen( false ) }
-					className="bento-pro-modal"
-				>
-					<p className="bento-pro-modal__copy">{ BENTO_PRO_COPY }</p>
-
-					<ul className="bento-pro-modal__list">
-						<li>{ __( '6, 7 & 8-tile layouts', 'bold-bento-grid' ) }</li>
-						<li>{ __( 'Glassmorphism & gradient presets', 'bold-bento-grid' ) }</li>
-						<li>{ __( 'Dynamic WooCommerce / query product grids', 'bold-bento-grid' ) }</li>
-						<li>{ __( 'Advanced hover & 3D animations', 'bold-bento-grid' ) }</li>
-					</ul>
-
-					<div className="bento-pro-modal__actions">
-						<Button variant="primary" href={ proUrl } target="_blank" rel="noopener noreferrer">
-							{ __( 'Explore Bento Grid Pro', 'bold-bento-grid' ) }
-						</Button>
-						<Button variant="tertiary" onClick={ () => setProModalOpen( false ) }>
-							{ __( 'Maybe later', 'bold-bento-grid' ) }
-						</Button>
-					</div>
-				</Modal>
-			) }
 		</>
 	);
 }

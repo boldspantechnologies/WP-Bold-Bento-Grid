@@ -29,6 +29,7 @@ postcss.config.js
 tsconfig.json
 
 # Docs / misc
+BUILD.md
 CHANGELOG.md
 CONTRIBUTING.md
 phpcs.xml

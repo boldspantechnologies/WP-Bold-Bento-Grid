@@ -38,7 +38,7 @@ class Bento_Assets {
 		);
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( self::EDITOR_SCRIPT_HANDLE, 'bold-bento-grid', BENTO_GRID_PATH . 'languages' );
+			wp_set_script_translations( self::EDITOR_SCRIPT_HANDLE, 'bold-bento-grid' );
 		}
 
 		if ( file_exists( BENTO_GRID_PATH . 'build/shared.js' ) ) {

@@ -2,10 +2,9 @@
  * Build + package pipeline for the WordPress.org release of Bold Bento Grid.
  *
  *   gulp build    -> compile src/ into build/ via wp-scripts
- *   gulp pot      -> (re)generate languages/bold-bento-grid.pot
  *   gulp copy     -> stage the distributable files into dist/<slug>/
  *   gulp zip      -> zip dist/<slug>/ into dist/<slug>.zip (+ a versioned copy)
- *   gulp package  -> clean -> build -> pot -> copy -> zip   (default task)
+ *   gulp package  -> clean -> build -> copy -> zip   (default task)
  */
 
 const { series, src, dest } = require( 'gulp' );
@@ -14,7 +13,6 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const del = require( 'del' );
 const zip = require( 'gulp-zip' );
-const wpPot = require( 'wp-pot' );
 
 const SLUG = 'bold-bento-grid';
 const DIST_DIR = 'dist';
@@ -33,7 +31,6 @@ const DIST_GLOBS = [
 	'includes/**/*',
 	'assets/**/*',
 	'build/**/*',
-	'languages/**/*',
 	'!**/.DS_Store',
 	'!**/*.map',
 ];
@@ -65,25 +62,6 @@ function build( done ) {
 	done();
 }
 
-function pot( done ) {
-	if ( ! fs.existsSync( 'languages' ) ) {
-		fs.mkdirSync( 'languages' );
-	}
-
-	wpPot( {
-		destFile: path.join( 'languages', `${ SLUG }.pot` ),
-		domain: SLUG,
-		package: 'Bold Bento Grid',
-		bugReport: 'https://bentogrid.boldspan.tech',
-		lastTranslator: 'Bold Span Technologies',
-		team: 'Bold Span Technologies',
-		src: [ 'bold-bento-grid.php', 'includes/**/*.php' ],
-		writeFile: true,
-	} );
-
-	done();
-}
-
 function copy() {
 	return src( DIST_GLOBS, { base: '.', encoding: false, dot: false, nodir: true } ).pipe(
 		dest( STAGE_DIR )
@@ -107,8 +85,7 @@ function versionZip( done ) {
 
 exports.clean = clean;
 exports.build = build;
-exports.pot = pot;
 exports.copy = series( cleanDist, copy );
 exports.zip = series( makeZip, versionZip );
-exports.package = series( clean, build, pot, cleanDist, copy, makeZip, versionZip );
+exports.package = series( clean, build, cleanDist, copy, makeZip, versionZip );
 exports.default = exports.package;

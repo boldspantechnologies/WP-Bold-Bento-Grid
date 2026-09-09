@@ -265,21 +265,9 @@ class Bento_Elementor_Widget extends Widget_Base {
 				'title_field' => '{{{ bento_title || "Tile" }}}',
 				'description' => sprintf(
 					/* translators: %d: maximum number of tiles. */
-					esc_html__( 'Bento Grid Lite supports up to %d tiles — extra items are ignored.', 'bold-bento-grid' ),
+					esc_html__( 'This widget lays out up to %d tiles.', 'bold-bento-grid' ),
 					self::MAX_TILES
 				),
-			)
-		);
-
-		$this->add_control(
-			'bento_tiles_pro_notice',
-			array(
-				'type'            => Controls_Manager::RAW_HTML,
-				'raw'             => sprintf(
-					'<div class="bento-pro-upsell-notice"><strong>🔒 %1$s</strong></div>',
-					esc_html__( 'Unlock 6+ Tile Layouts, Glassmorphism, Dynamic Product Grids, & Hover Animations in Bento Grid Pro', 'bold-bento-grid' )
-				),
-				'content_classes' => 'bento-pro-upsell-notice-wrap',
 			)
 		);
 

@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       Bold Bento Grid
- * Plugin URI:        https://bentogrid.boldspan.tech
  * Description:       A modern, responsive Bento-style grid for Gutenberg and Elementor with curated presets, per-tile content modes, and hover effects.
  * Version:           1.0.0
  * Requires at least: 6.4
@@ -11,7 +10,6 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       bold-bento-grid
- * Domain Path:       /languages
  *
  * @package Bold_Bento_Grid
  */
@@ -46,7 +44,6 @@ final class Bold_Bento_Grid {
 		'Bento_Gutenberg'  => 'includes/class-bento-gutenberg.php',
 		'Bento_Elementor'  => 'includes/class-bento-elementor.php',
 		'Bento_Rest_Api'   => 'includes/class-bento-rest-api.php',
-		'Bento_Pro_Hooks'  => 'includes/class-bento-pro-hooks.php',
 		'Bento_Onboarding' => 'includes/class-bento-onboarding.php',
 	);
 
