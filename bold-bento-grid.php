@@ -1,14 +1,17 @@
 <?php
 /**
  * Plugin Name:       Bold Bento Grid
- * Description:       A high-performance, secure, Vercel/Stripe-inspired Bento Grid engine for Gutenberg and Elementor.
+ * Plugin URI:        https://bentogrid.boldspan.tech
+ * Description:       A modern, responsive Bento-style grid for Gutenberg and Elementor with curated presets, per-tile content modes, and hover effects.
  * Version:           1.0.0
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            Bold Span Technologies
+ * Author URI:        https://boldspan.tech
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       bold-bento-grid
+ * Domain Path:       /languages
  *
  * @package Bold_Bento_Grid
  */
@@ -24,10 +27,8 @@ define( 'BENTO_GRID_URL', plugin_dir_url( __FILE__ ) );
 define( 'BENTO_GRID_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
- * Core plugin loader.
- *
- * Boots on `plugins_loaded`, verifies the environment, then wires up every
- * feature component (i18n, assets, Gutenberg, Elementor, REST, Pro hooks).
+ * Core plugin loader. Boots on `plugins_loaded`, verifies the environment,
+ * then loads every feature component.
  */
 final class Bold_Bento_Grid {
 
@@ -38,18 +39,15 @@ final class Bold_Bento_Grid {
 	const MIN_WP_VERSION = '6.4';
 
 	/**
-	 * Component classes, loaded and instantiated in order. Each lives in
-	 * `includes/` and is optional — a missing file is skipped, not fatal.
-	 *
-	 * @var array<string, string> class name => file path (relative to plugin root)
+	 * @var array<string, string> class name => file path relative to plugin root.
 	 */
 	const COMPONENTS = array(
-		'Bento_I18n'      => 'includes/class-bento-i18n.php',
-		'Bento_Assets'    => 'includes/class-bento-assets.php',
-		'Bento_Gutenberg' => 'includes/class-bento-gutenberg.php',
-		'Bento_Elementor' => 'includes/class-bento-elementor.php',
-		'Bento_Rest_Api'  => 'includes/class-bento-rest-api.php',
-		'Bento_Pro_Hooks' => 'includes/class-bento-pro-hooks.php',
+		'Bento_Assets'     => 'includes/class-bento-assets.php',
+		'Bento_Gutenberg'  => 'includes/class-bento-gutenberg.php',
+		'Bento_Elementor'  => 'includes/class-bento-elementor.php',
+		'Bento_Rest_Api'   => 'includes/class-bento-rest-api.php',
+		'Bento_Pro_Hooks'  => 'includes/class-bento-pro-hooks.php',
+		'Bento_Onboarding' => 'includes/class-bento-onboarding.php',
 	);
 
 	/**
@@ -152,3 +150,23 @@ final class Bold_Bento_Grid {
 }
 
 Bold_Bento_Grid::bento_get_instance();
+
+register_activation_hook(
+	__FILE__,
+	static function () {
+		$onboarding = BENTO_GRID_PATH . 'includes/class-bento-onboarding.php';
+
+		if ( file_exists( $onboarding ) ) {
+			require_once $onboarding;
+			Bento_Onboarding::bento_on_activate();
+		}
+	}
+);
+
+register_deactivation_hook(
+	__FILE__,
+	static function () {
+		delete_transient( 'bento_grid_activation_redirect' );
+		delete_option( 'bento_grid_show_welcome_notice' );
+	}
+);

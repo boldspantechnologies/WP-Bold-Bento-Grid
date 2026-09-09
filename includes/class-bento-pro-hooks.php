@@ -8,8 +8,6 @@ use Elementor\Controls_Manager;
 
 class Bento_Pro_Hooks {
 
-	const FILTER_IS_PRO = 'bento_grid_is_pro';
-
 	const EDITOR_SCRIPT_HANDLE = 'bento-grid-block-editor-script';
 
 	const ELEMENTOR_WIDGET_NAME = 'bento-grid-widget';
@@ -28,7 +26,12 @@ class Bento_Pro_Hooks {
 	}
 
 	public static function bento_is_pro() {
-		return (bool) apply_filters( self::FILTER_IS_PRO, false );
+		/**
+		 * Filter whether Bold Bento Grid Pro is active.
+		 *
+		 * @param bool $is_pro Default false.
+		 */
+		return (bool) apply_filters( 'bento_grid_is_pro', false );
 	}
 
 	public function bento_render_elementor_upsell( $element, $args ) {
@@ -51,7 +54,7 @@ class Bento_Pro_Hooks {
 			$items .= sprintf( '<li>🔒 %s</li>', esc_html( $preset ) );
 		}
 
-		$pro_url = esc_url( apply_filters( 'bento_grid_pro_url', 'https://boldspantechnologies.com/bento-grid-pro' ) );
+		$pro_url = esc_url( apply_filters( 'bento_grid_pro_url', 'https://bentogrid.boldspan.tech' ) );
 
 		$element->add_control(
 			'bento_pro_upsell_notice',
@@ -70,13 +73,10 @@ class Bento_Pro_Hooks {
 	}
 
 	/**
-	 * Expose the Pro state to the block editor. The Lite grid block reads
-	 * `window.bentoGridPro` to decide whether to show its locked-tile guardrail,
-	 * locked-preset previews, and upsell modal.
+	 * Expose the Pro state to the block editor via `window.bentoGridPro`.
 	 */
 	public function bento_enqueue_editor_upsell() {
 		if ( ! wp_script_is( self::EDITOR_SCRIPT_HANDLE, 'registered' ) ) {
-			error_log( 'Bento Grid: editor script handle "' . self::EDITOR_SCRIPT_HANDLE . '" not registered; Pro config skipped.' );
 			return;
 		}
 
@@ -85,7 +85,7 @@ class Bento_Pro_Hooks {
 			'bentoGridPro',
 			array(
 				'isPro' => self::bento_is_pro(),
-				'url'   => esc_url_raw( apply_filters( 'bento_grid_pro_url', 'https://boldspantechnologies.com/bento-grid-pro' ) ),
+				'url'   => esc_url_raw( apply_filters( 'bento_grid_pro_url', 'https://bentogrid.boldspan.tech' ) ),
 			)
 		);
 	}

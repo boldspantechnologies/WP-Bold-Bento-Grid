@@ -1,6 +1,6 @@
 <?php
 /**
- * Elementor widget — renders the exact same markup as the Gutenberg
+ * Elementor widget — renders the same markup as the Gutenberg
  * `bold-bento/grid` block so the front end is identical between editors.
  *
  * @package Bold_Bento_Grid
@@ -14,11 +14,8 @@ use Elementor\Controls_Manager;
 use Elementor\Repeater;
 use Elementor\Widget_Base;
 
-class Bold_Bento_Elementor_Widget extends Widget_Base {
+class Bento_Elementor_Widget extends Widget_Base {
 
-	/**
-	 * Lite is capped at 5 tiles — matches the Gutenberg block.
-	 */
 	const MAX_TILES = 5;
 
 	const DEFAULT_PRESET = 'hero-3';
@@ -31,10 +28,6 @@ class Bold_Bento_Elementor_Widget extends Widget_Base {
 
 	const DEFAULT_OVERLAY_OPACITY = 40;
 
-	/**
-	 * Preset slug => label. Slugs map 1:1 to the `[data-bento-grid="<slug>"]`
-	 * rules in `src/blocks/style.scss`.
-	 */
 	const PRESETS = array(
 		'hero-3'       => 'Hero 3',
 		'showcase-4'   => 'Showcase 4',
@@ -43,10 +36,6 @@ class Bold_Bento_Elementor_Widget extends Widget_Base {
 		'asymmetric-5' => 'Asymmetric 5',
 	);
 
-	/**
-	 * Per-tile content modes shared with the Gutenberg Tile block
-	 * (`custom-blocks` is Gutenberg-only, so it is not offered here).
-	 */
 	const CONTENT_MODES = array( 'image-overlay', 'text-top', 'text-bottom' );
 
 	public function get_name() {

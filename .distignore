@@ -1,0 +1,42 @@
+# Directories
+/.git
+/.github
+/.wordpress-org
+/node_modules
+/src
+/dist
+/vendor
+
+# Dot files
+.distignore
+.editorconfig
+.gitattributes
+.gitignore
+.nvmrc
+.eslintrc.js
+.prettierrc.js
+.stylelintrc.json
+
+# Build / tooling config
+gulpfile.js
+package.json
+package-lock.json
+composer.json
+composer.lock
+webpack.config.js
+tailwind.config.js
+postcss.config.js
+tsconfig.json
+
+# Docs / misc
+CHANGELOG.md
+CONTRIBUTING.md
+phpcs.xml
+phpcs.xml.dist
+phpunit.xml
+phpunit.xml.dist
+*.zip
+*.map
+*.log
+.DS_Store
+Thumbs.db

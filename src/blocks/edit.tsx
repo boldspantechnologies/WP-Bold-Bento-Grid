@@ -44,7 +44,7 @@ declare global {
 	}
 }
 
-const BENTO_PRO_URL = 'https://boldspantechnologies.com/bento-grid-pro';
+const BENTO_PRO_URL = 'https://bentogrid.boldspan.tech';
 
 const BENTO_PRO_COPY = __(
 	'Unlock 6+ Tile Layouts, Glassmorphism, Dynamic Product Grids, & Hover Animations in Bento Grid Pro',

@@ -88,7 +88,7 @@ class Bento_Elementor {
 
 			return true;
 		} catch ( \Throwable $exception ) {
-			error_log( 'Bento Grid: failed to prepend Elementor category - ' . $exception->getMessage() );
+			$this->bento_log( 'failed to prepend Elementor category - ' . $exception->getMessage() );
 			return false;
 		}
 	}
@@ -97,14 +97,26 @@ class Bento_Elementor {
 		$widget_class_file = BENTO_GRID_PATH . 'includes/widgets/class-widget-bento.php';
 
 		if ( ! file_exists( $widget_class_file ) ) {
-			error_log( 'Bento Grid: Elementor widget class file not found at ' . $widget_class_file );
+			$this->bento_log( 'Elementor widget class file not found at ' . $widget_class_file );
 			return;
 		}
 
 		require_once $widget_class_file;
 
-		if ( class_exists( 'Bold_Bento_Elementor_Widget' ) ) {
-			$widgets_manager->register( new Bold_Bento_Elementor_Widget() );
+		if ( class_exists( 'Bento_Elementor_Widget' ) ) {
+			$widgets_manager->register( new Bento_Elementor_Widget() );
+		}
+	}
+
+	/**
+	 * Write a namespaced message to the PHP error log, but only when WP_DEBUG
+	 * is on. Used for the "should never happen" branches above.
+	 *
+	 * @param string $message Message to log.
+	 */
+	private function bento_log( $message ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'Bold Bento Grid: ' . $message ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 		}
 	}
 }

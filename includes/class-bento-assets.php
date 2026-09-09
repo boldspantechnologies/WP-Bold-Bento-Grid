@@ -9,29 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Registers the compiled editor bundle, front-end runtime and stylesheet, then
- * loads the front-end assets only on requests that actually render a Bento Grid
- * (Gutenberg block or Elementor widget).
- */
 class Bento_Assets {
 
-	/**
-	 * Editor bundle handle — also referenced from `src/blocks/block.json`
-	 * as `editorScript`.
-	 */
 	const EDITOR_SCRIPT_HANDLE = 'bento-grid-block-editor-script';
 
-	/**
-	 * Front-end runtime handle — referenced from `block.json` as `viewScript`
-	 * and from the Elementor widget's `get_script_depends()`.
-	 */
 	const SCRIPT_HANDLE = 'bento-grid-frontend-script';
 
-	/**
-	 * Stylesheet handle — referenced from `block.json` as `style` and from the
-	 * Elementor widget's `get_style_depends()`.
-	 */
 	const STYLE_HANDLE = 'bento-grid-frontend-style';
 
 	const BLOCK_NAME = 'bold-bento/grid';
@@ -43,9 +26,6 @@ class Bento_Assets {
 		add_action( 'wp_enqueue_scripts', array( $this, 'bento_maybe_enqueue_frontend' ) );
 	}
 
-	/**
-	 * Register (but do not enqueue) every compiled asset.
-	 */
 	public function bento_register_assets() {
 		$editor_asset = $this->bento_get_asset_meta( 'index' );
 
@@ -58,7 +38,7 @@ class Bento_Assets {
 		);
 
 		if ( function_exists( 'wp_set_script_translations' ) ) {
-			wp_set_script_translations( self::EDITOR_SCRIPT_HANDLE, 'bold-bento-grid' );
+			wp_set_script_translations( self::EDITOR_SCRIPT_HANDLE, 'bold-bento-grid', BENTO_GRID_PATH . 'languages' );
 		}
 
 		if ( file_exists( BENTO_GRID_PATH . 'build/shared.js' ) ) {
@@ -86,9 +66,8 @@ class Bento_Assets {
 	}
 
 	/**
-	 * Enqueue the front-end stylesheet + runtime, but only when a Bento Grid is
-	 * present on the current request. Keeps the plugin off pages that do not
-	 * use it, protecting Core Web Vitals.
+	 * Enqueue the front-end assets only when the current request renders a
+	 * Bento Grid, so the plugin stays off pages that do not use it.
 	 */
 	public function bento_maybe_enqueue_frontend() {
 		if ( is_admin() || ! $this->bento_should_enqueue() ) {
@@ -112,9 +91,6 @@ class Bento_Assets {
 		}
 	}
 
-	/**
-	 * @return bool Whether the current request renders a Bento Grid.
-	 */
 	private function bento_should_enqueue() {
 		$post = get_post();
 
@@ -129,10 +105,8 @@ class Bento_Assets {
 		}
 
 		/**
-		 * Force-load the Bento Grid front-end assets.
-		 *
-		 * Useful for template locations Core cannot introspect (widgets,
-		 * theme parts, Pro dynamic loops).
+		 * Force-load the Bento Grid front-end assets for template locations
+		 * Core cannot introspect (widgets, theme parts, Pro dynamic loops).
 		 *
 		 * @param bool         $enqueue Default false.
 		 * @param WP_Post|null $post    Current post object, if any.
@@ -140,10 +114,6 @@ class Bento_Assets {
 		return (bool) apply_filters( 'bento_grid_should_enqueue_assets', false, $post );
 	}
 
-	/**
-	 * @param WP_Post $post Post to inspect.
-	 * @return bool Whether the post's Elementor data contains the Bento widget.
-	 */
 	private function bento_post_has_elementor_widget( $post ) {
 		if ( ! did_action( 'elementor/loaded' ) ) {
 			return false;

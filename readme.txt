@@ -1,18 +1,18 @@
-=== Bold Bento Grid ===
+=== WP Bold Bento Grid ===
 Contributors: boldspantechnologies
 Tags: bento, grid, layout, gutenberg, elementor
 Requires at least: 6.4
-Tested up to: 7.1
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A modern, responsive Bento-style grid for Gutenberg and Elementor — curated presets, per-tile content modes, hover effects, and theme-safe output.
+A modern, responsive Bento-style grid for Gutenberg and Elementor with curated presets, per-tile content modes, and hover effects.
 
 == Description ==
 
-Bold Bento Grid brings the modern "bento box" layout to WordPress with a single, high-performance CSS Grid engine that renders identically in the block editor and on the front end.
+WP Bold Bento Grid brings the modern "bento box" layout to WordPress with a single, high-performance CSS Grid engine that renders identically in the block editor and on the front end.
 
 Choose a curated preset, drop in your tiles, and the grid takes care of the geometry. Every tile can show an image with an overlay, text above or below its image, or a free-form stack of inner blocks.
 
@@ -45,14 +45,15 @@ Choose a curated preset, drop in your tiles, and the grid takes care of the geom
 == Installation ==
 
 1. Upload the `bold-bento-grid` folder to `/wp-content/plugins/`, or install the plugin through the **Plugins > Add New** screen.
-2. Activate **Bold Bento Grid** through the **Plugins** screen.
-3. In the block editor, add the **Bento Grid** block. In Elementor, drag the **Bento Grid** widget from the **Bento Engine** category.
+2. Activate **WP Bold Bento Grid** through the **Plugins** screen.
+3. On activation you are taken to a short **Get started with Bento Grid** screen with step-by-step instructions for the block editor and for Elementor. You can reopen it any time from the **Get started** link on the Plugins screen.
+4. In the block editor, add the **Bento Grid** block. In Elementor, drag the **Bento Grid** widget from the **Bento Engine** category.
 
 == Frequently Asked Questions ==
 
 = How many tiles can a grid have? =
 
-Two to five. Larger layouts (6+ tiles), glassmorphism presets, and dynamic WooCommerce/query grids are part of Bold Bento Grid Pro.
+Two to five. Larger layouts (6+ tiles), glassmorphism presets, and dynamic WooCommerce/query grids are part of Bold Bento Grid Pro — https://bentogrid.boldspan.tech.
 
 = Will it match my theme? =
 
@@ -60,11 +61,15 @@ Yes. Tiles inherit your theme's font family and body colour, but the grid gap, t
 
 = Is the Elementor output the same as the block output? =
 
-Yes — both produce the exact same HTML wrapper, classes, and `data-bento-grid` attribute, and share one stylesheet.
+Yes — both produce the same HTML wrapper, classes, and `data-bento-grid` attribute, and share one stylesheet.
 
 = Does it support reduced motion? =
 
 Yes. When the operating system requests reduced motion, all hover transitions and transforms are disabled.
+
+= Does the plugin load anything on pages that don't use a grid? =
+
+No. The front-end stylesheet and runtime are only enqueued on requests that actually render a Bento Grid block or widget.
 
 == Screenshots ==
 
@@ -73,10 +78,25 @@ Yes. When the operating system requests reduced motion, all hover transitions an
 3. Per-tile content-mode, hover, colour, and border controls.
 4. The same grid collapsing to a single column on mobile.
 
+== Source Code ==
+
+This plugin ships compiled JavaScript and CSS in the `build/` directory. The
+human-readable sources (TypeScript in `src/`, SCSS, and the block metadata) are
+included in the development repository:
+
+https://github.com/boldspantechnologies/bold-bento-grid
+
+Build tools: [Node.js](https://nodejs.org/) with [@wordpress/scripts](https://www.npmjs.com/package/@wordpress/scripts).
+
+* `npm install` — install the build toolchain.
+* `npm run build` — compile `src/` into `build/`.
+* `npm run package` — produce a distributable `dist/bold-bento-grid.zip`.
+
 == Changelog ==
 
 = 1.0.0 =
 * Initial release.
+* Post-activation "Get started" screen with block-editor and Elementor instructions, reachable from the Plugins screen.
 * CSS Grid engine with nine curated presets (2–5 tiles) shared between the block editor and the front end.
 * Gutenberg block (`bold-bento/grid` + `bold-bento/tile`) with a static save renderer.
 * Elementor widget producing byte-identical markup.
@@ -90,4 +110,4 @@ Yes. When the operating system requests reduced motion, all hover transitions an
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of Bold Bento Grid.
+Initial release of WP Bold Bento Grid.
