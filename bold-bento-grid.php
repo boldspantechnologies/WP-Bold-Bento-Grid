@@ -11,7 +11,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       bold-bento-grid
  *
- * @package Bold_Bento_Grid
+ * @package Bento_Grid
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +28,7 @@ define( 'BENTO_GRID_BASENAME', plugin_basename( __FILE__ ) );
  * Core plugin loader. Boots on `plugins_loaded`, verifies the environment,
  * then loads every feature component.
  */
-final class Bold_Bento_Grid {
+final class Bento_Grid {
 
 	const VERSION = '1.0.0';
 
@@ -48,7 +48,7 @@ final class Bold_Bento_Grid {
 	);
 
 	/**
-	 * @var Bold_Bento_Grid|null
+	 * @var Bento_Grid|null
 	 */
 	private static $instance = null;
 
@@ -62,7 +62,7 @@ final class Bold_Bento_Grid {
 	/**
 	 * Singleton accessor.
 	 *
-	 * @return Bold_Bento_Grid
+	 * @return Bento_Grid
 	 */
 	public static function bento_get_instance() {
 		if ( null === self::$instance ) {
@@ -102,7 +102,7 @@ final class Bold_Bento_Grid {
 		/**
 		 * Fires once the Bento Grid engine has finished booting.
 		 *
-		 * @param Bold_Bento_Grid $plugin The plugin instance.
+		 * @param Bento_Grid $plugin The plugin instance.
 		 */
 		do_action( 'bento_grid_loaded', $this );
 	}
@@ -146,7 +146,7 @@ final class Bold_Bento_Grid {
 	}
 }
 
-Bold_Bento_Grid::bento_get_instance();
+Bento_Grid::bento_get_instance();
 
 register_activation_hook(
 	__FILE__,

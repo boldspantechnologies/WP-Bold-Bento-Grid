@@ -226,15 +226,7 @@ class Bento_Onboarding {
 				</div>
 			</div>
 
-			<div class="bento-welcome__pro">
-				<h2><?php esc_html_e( 'Beyond this plugin', 'bold-bento-grid' ); ?></h2>
-				<p>
-					<?php esc_html_e( 'Bold Bento Grid Pro is a separate, optional add-on with its own larger layouts, glassmorphism presets, and dynamic WooCommerce / query grids. This plugin is complete without it.', 'bold-bento-grid' ); ?>
-				</p>
-				<a href="<?php echo esc_url( self::PRO_URL ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'Learn about Bold Bento Grid Pro', 'bold-bento-grid' ); ?>
-				</a>
-			</div>
+			
 		</div>
 		<?php
 	}
