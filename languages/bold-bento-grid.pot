@@ -1,14 +1,14 @@
-# Copyright (C) 2026 WP Bold Bento Grid
-# This file is distributed under the same license as the WP Bold Bento Grid package.
+# Copyright (C) 2026 Bold Bento Grid
+# This file is distributed under the same license as the Bold Bento Grid package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Bold Bento Grid\n"
+"Project-Id-Version: Bold Bento Grid\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language-Team: Bold Span Technologies\n"
 "Last-Translator: Bold Span Technologies\n"
-"POT-Creation-Date: 2026-09-09 05:19+0000\n"
+"POT-Creation-Date: 2026-09-09 05:30+0000\n"
 "Report-Msgid-Bugs-To: https://bentogrid.boldspan.tech\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -18,141 +18,140 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. translators: 1: minimum PHP version, 2: minimum WordPress version.
-#: ../bold-bento-grid.php:144
-msgid "WP Bold Bento Grid requires PHP %1$s+ and WordPress %2$s+. Please upgrade your environment to activate the plugin."
+#: ../bold-bento-grid.php:143
+msgid "Bold Bento Grid requires PHP %1$s+ and WordPress %2$s+. Please upgrade your environment to activate the plugin."
 msgstr ""
 
 #. translators: %s: minimum required Elementor version.
 #: ../includes/class-bento-elementor.php:46
-msgid "WP Bold Bento Grid requires Elementor %s or higher. Please update Elementor to use the Bento Grid widget."
+msgid "Bold Bento Grid requires Elementor %s or higher. Please update Elementor to use the Bento Grid widget."
 msgstr ""
 
 #: ../includes/class-bento-elementor.php:58
 msgid "Bento Engine"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:39
-msgid "Get started"
-msgstr ""
-
-#: ../includes/class-bento-onboarding.php:59, ../includes/class-bento-onboarding.php:165
+#: ../includes/class-bento-onboarding.php:55, ../includes/class-bento-onboarding.php:184
 msgid "Get started with Bento Grid"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:60, ../includes/widgets/class-widget-bento.php:46
+#: ../includes/class-bento-onboarding.php:56, ../includes/widgets/class-widget-bento.php:46
 msgid "Bento Grid"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:140
-msgid "WP Bold Bento Grid is ready."
+#: ../includes/class-bento-onboarding.php:84
+msgid "Get started"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:142
+#: ../includes/class-bento-onboarding.php:159
+msgid "Bold Bento Grid is ready."
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:161
 msgid "See how to add your first grid"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:144
+#: ../includes/class-bento-onboarding.php:163
 msgid "Dismiss"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:154
+#: ../includes/class-bento-onboarding.php:173
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:167
+#: ../includes/class-bento-onboarding.php:186
 msgid "Build a modern bento-box layout in a couple of minutes. Pick the editor you use below."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:172
+#: ../includes/class-bento-onboarding.php:191
 msgid "Block editor (Gutenberg)"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:174
+#: ../includes/class-bento-onboarding.php:193
 msgid "Open or create a post or page."
 msgstr ""
 
-#. translators: %s: the block inserter "+" button.
-#: ../includes/class-bento-onboarding.php:179
-msgid "Click the %s inserter and search for \"Bento Grid\"."
+#: ../includes/class-bento-onboarding.php:194
+msgid "Click the + block inserter and search for \"Bento Grid\"."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:184
+#: ../includes/class-bento-onboarding.php:195
 msgid "In the block sidebar, set the number of tiles and choose a layout preset."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:185
-msgid "Select each tile to add an image, a title/caption, colours, borders, or a hover effect."
-msgstr ""
-
-#: ../includes/class-bento-onboarding.php:188
-msgid "Create a new page"
-msgstr ""
-
-#: ../includes/class-bento-onboarding.php:193
-msgid "Elementor"
-msgstr ""
-
-#: ../includes/class-bento-onboarding.php:209
-msgid "Elementor is not installed. Install it to get the Bento Grid widget — the block editor works without it."
-msgstr ""
-
-#: ../includes/class-bento-onboarding.php:212
-msgid "Search for Elementor"
-msgstr ""
-
 #: ../includes/class-bento-onboarding.php:196
-msgid "Elementor is active — the widget is ready to use."
+msgid "Select each tile to add an image, a title and caption, colours, borders, or a hover effect."
 msgstr ""
 
 #: ../includes/class-bento-onboarding.php:199
+msgid "Create a new page"
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:204
+msgid "Elementor"
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:220
+msgid "Elementor is not installed. Install it to get the Bento Grid widget — the block editor works without it."
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:223
+msgid "Search for Elementor"
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:207
+msgid "Elementor is active — the widget is ready to use."
+msgstr ""
+
+#: ../includes/class-bento-onboarding.php:210
 msgid "Edit a page with Elementor."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:200
-msgid "In the widget panel, open the \"Bento Engine\" category (or search \"Bento Grid\")."
+#: ../includes/class-bento-onboarding.php:211
+msgid "In the widget panel, open the \"Bento Engine\" category, or search for \"Bento Grid\"."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:201
+#: ../includes/class-bento-onboarding.php:212
 msgid "Drag the Bento Grid widget onto the canvas."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:202
+#: ../includes/class-bento-onboarding.php:213
 msgid "Use the Layout, Tiles, and Style tabs to configure the grid."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:205
+#: ../includes/class-bento-onboarding.php:216
 msgid "Go to Plugins"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:219
+#: ../includes/class-bento-onboarding.php:230
 msgid "Need more?"
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:221
-msgid "6+ tile layouts, glassmorphism presets, dynamic WooCommerce / query grids, and advanced animations are in Bold Bento Grid Pro."
+#: ../includes/class-bento-onboarding.php:232
+msgid "6+ tile layouts, glassmorphism presets, dynamic WooCommerce and query grids, and advanced animations are in Bold Bento Grid Pro."
 msgstr ""
 
-#: ../includes/class-bento-onboarding.php:224
+#: ../includes/class-bento-onboarding.php:235
 msgid "Explore Bento Grid Pro"
 msgstr ""
 
-#: ../includes/class-bento-pro-hooks.php:44
+#: ../includes/class-bento-pro-hooks.php:47
 msgid "Glassmorphism 8-tile"
 msgstr ""
 
-#: ../includes/class-bento-pro-hooks.php:45
+#: ../includes/class-bento-pro-hooks.php:48
 msgid "WooCommerce Auto-Fetch Grid"
 msgstr ""
 
-#: ../includes/class-bento-pro-hooks.php:46
+#: ../includes/class-bento-pro-hooks.php:49
 msgid "Interactive Product Bento"
 msgstr ""
 
-#: ../includes/class-bento-pro-hooks.php:62, ../includes/widgets/class-widget-bento.php:280
+#: ../includes/class-bento-pro-hooks.php:65, ../includes/widgets/class-widget-bento.php:280
 msgid "Unlock 6+ Tile Layouts, Glassmorphism, Dynamic Product Grids, & Hover Animations in Bento Grid Pro"
 msgstr ""
 
-#: ../includes/class-bento-pro-hooks.php:65
+#: ../includes/class-bento-pro-hooks.php:68
 msgid "Explore Bento Grid Pro →"
 msgstr ""
 

@@ -1,0 +1,44 @@
+.bento-welcome__lead {
+	font-size: 14px;
+	max-width: 40em;
+}
+
+.bento-welcome__grid {
+	display: grid;
+	grid-template-columns: repeat( auto-fit, minmax( 300px, 1fr ) );
+	gap: 20px;
+	margin: 20px 0;
+	max-width: 900px;
+}
+
+.bento-welcome__card,
+.bento-welcome__pro {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 20px 24px;
+}
+
+.bento-welcome__pro {
+	max-width: 900px;
+}
+
+.bento-welcome__card h2,
+.bento-welcome__pro h2 {
+	margin-top: 0;
+}
+
+.bento-welcome__card ol {
+	margin: 12px 0 18px 18px;
+	line-height: 1.7;
+}
+
+.bento-welcome__status {
+	margin: 0 0 12px;
+	color: #50575e;
+}
+
+.bento-welcome__status.is-ok {
+	color: #007017;
+	font-weight: 600;
+}

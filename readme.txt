@@ -1,8 +1,8 @@
-=== WP Bold Bento Grid ===
+=== Bold Bento Grid ===
 Contributors: boldspantechnologies
 Tags: bento, grid, layout, gutenberg, elementor
 Requires at least: 6.4
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later
@@ -12,7 +12,7 @@ A modern, responsive Bento-style grid for Gutenberg and Elementor with curated p
 
 == Description ==
 
-WP Bold Bento Grid brings the modern "bento box" layout to WordPress with a single, high-performance CSS Grid engine that renders identically in the block editor and on the front end.
+Bold Bento Grid brings the modern "bento box" layout to WordPress with a single, high-performance CSS Grid engine that renders identically in the block editor and on the front end.
 
 Choose a curated preset, drop in your tiles, and the grid takes care of the geometry. Every tile can show an image with an overlay, text above or below its image, or a free-form stack of inner blocks.
 
@@ -45,7 +45,7 @@ Choose a curated preset, drop in your tiles, and the grid takes care of the geom
 == Installation ==
 
 1. Upload the `bold-bento-grid` folder to `/wp-content/plugins/`, or install the plugin through the **Plugins > Add New** screen.
-2. Activate **WP Bold Bento Grid** through the **Plugins** screen.
+2. Activate **Bold Bento Grid** through the **Plugins** screen.
 3. On activation you are taken to a short **Get started with Bento Grid** screen with step-by-step instructions for the block editor and for Elementor. You can reopen it any time from the **Get started** link on the Plugins screen.
 4. In the block editor, add the **Bento Grid** block. In Elementor, drag the **Bento Grid** widget from the **Bento Engine** category.
 
@@ -110,4 +110,4 @@ Build tools: [Node.js](https://nodejs.org/) with [@wordpress/scripts](https://ww
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of WP Bold Bento Grid.
+Initial release of Bold Bento Grid.

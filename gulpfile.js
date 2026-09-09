@@ -1,5 +1,5 @@
 /**
- * Build + package pipeline for the WordPress.org release of WP Bold Bento Grid.
+ * Build + package pipeline for the WordPress.org release of Bold Bento Grid.
  *
  *   gulp build    -> compile src/ into build/ via wp-scripts
  *   gulp pot      -> (re)generate languages/bold-bento-grid.pot
@@ -31,6 +31,7 @@ const DIST_GLOBS = [
 	'readme.txt',
 	'LICENSE',
 	'includes/**/*',
+	'assets/**/*',
 	'build/**/*',
 	'languages/**/*',
 	'!**/.DS_Store',
@@ -72,7 +73,7 @@ function pot( done ) {
 	wpPot( {
 		destFile: path.join( 'languages', `${ SLUG }.pot` ),
 		domain: SLUG,
-		package: 'WP Bold Bento Grid',
+		package: 'Bold Bento Grid',
 		bugReport: 'https://bentogrid.boldspan.tech',
 		lastTranslator: 'Bold Span Technologies',
 		team: 'Bold Span Technologies',

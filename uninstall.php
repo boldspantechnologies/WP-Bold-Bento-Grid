@@ -1,9 +1,13 @@
 <?php
 /**
- * Uninstall cleanup for WP Bold Bento Grid.
+ * Uninstall cleanup for Bold Bento Grid.
  *
  * @package Bold_Bento_Grid
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;

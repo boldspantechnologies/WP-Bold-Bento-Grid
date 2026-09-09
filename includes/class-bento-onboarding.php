@@ -20,16 +20,61 @@ class Bento_Onboarding {
 
 	const NOTICE_DISMISS_META = 'bento_grid_welcome_notice_dismissed';
 
+	const STYLE_HANDLE = 'bento-grid-welcome';
+
 	const PRO_URL = 'https://bentogrid.boldspan.tech';
 
 	const CAPABILITY = 'edit_posts';
+
+	/**
+	 * @var string|false Hook suffix of the welcome page.
+	 */
+	private $page_hook = false;
 
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'bento_register_page' ) );
 		add_action( 'admin_init', array( $this, 'bento_maybe_redirect' ) );
 		add_action( 'admin_init', array( $this, 'bento_maybe_dismiss_notice' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'bento_enqueue_assets' ) );
 		add_action( 'admin_notices', array( $this, 'bento_render_notice' ) );
 		add_filter( 'plugin_action_links_' . BENTO_GRID_BASENAME, array( $this, 'bento_action_links' ) );
+	}
+
+	/**
+	 * Runs from the plugin activation hook. Cannot assume this class is loaded,
+	 * so the main file requires the file and calls this statically.
+	 */
+	public static function bento_on_activate() {
+		set_transient( self::REDIRECT_TRANSIENT, 1, 30 );
+		update_option( self::NOTICE_OPTION, '1' );
+	}
+
+	public function bento_register_page() {
+		$this->page_hook = add_submenu_page(
+			'index.php',
+			__( 'Get started with Bento Grid', 'bold-bento-grid' ),
+			__( 'Bento Grid', 'bold-bento-grid' ),
+			self::CAPABILITY,
+			self::PAGE_SLUG,
+			array( $this, 'bento_render_page' )
+		);
+
+		if ( $this->page_hook ) {
+			remove_submenu_page( 'index.php', self::PAGE_SLUG );
+		}
+	}
+
+	public function bento_enqueue_assets( $hook_suffix ) {
+		if ( ! $this->page_hook || $hook_suffix !== $this->page_hook ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			self::STYLE_HANDLE,
+			BENTO_GRID_URL . 'assets/css/bento-welcome.css',
+			array(),
+			BENTO_GRID_VERSION
+		);
 	}
 
 	public function bento_action_links( $links ) {
@@ -42,30 +87,6 @@ class Bento_Onboarding {
 		array_unshift( $links, $get_started );
 
 		return $links;
-	}
-
-	/**
-	 * Runs from the plugin activation hook. Cannot assume this class is loaded,
-	 * so the main file calls it statically.
-	 */
-	public static function bento_on_activate() {
-		set_transient( self::REDIRECT_TRANSIENT, 1, 30 );
-		update_option( self::NOTICE_OPTION, '1' );
-	}
-
-	public function bento_register_page() {
-		$hook = add_submenu_page(
-			'index.php',
-			esc_html__( 'Get started with Bento Grid', 'bold-bento-grid' ),
-			esc_html__( 'Bento Grid', 'bold-bento-grid' ),
-			self::CAPABILITY,
-			self::PAGE_SLUG,
-			array( $this, 'bento_render_page' )
-		);
-
-		if ( $hook ) {
-			remove_submenu_page( 'index.php', self::PAGE_SLUG );
-		}
 	}
 
 	/**
@@ -154,10 +175,10 @@ class Bento_Onboarding {
 
 		delete_option( self::NOTICE_OPTION );
 
-		$new_page_url        = esc_url( admin_url( 'post-new.php?post_type=page' ) );
-		$elementor_active    = $this->bento_elementor_active();
-		$elementor_install   = esc_url( admin_url( 'plugin-install.php?s=elementor&tab=search&type=term' ) );
-		$plugins_url         = esc_url( admin_url( 'plugins.php' ) );
+		$new_page_url      = admin_url( 'post-new.php?post_type=page' );
+		$elementor_active  = $this->bento_elementor_active();
+		$elementor_install = admin_url( 'plugin-install.php?s=elementor&tab=search&type=term' );
+		$plugins_url       = admin_url( 'plugins.php' );
 		?>
 		<div class="wrap bento-welcome">
 			<h1><?php esc_html_e( 'Get started with Bento Grid', 'bold-bento-grid' ); ?></h1>
@@ -170,17 +191,9 @@ class Bento_Onboarding {
 					<h2><?php esc_html_e( 'Block editor (Gutenberg)', 'bold-bento-grid' ); ?></h2>
 					<ol>
 						<li><?php esc_html_e( 'Open or create a post or page.', 'bold-bento-grid' ); ?></li>
-						<li>
-							<?php
-							printf(
-								/* translators: %s: the block inserter "+" button. */
-								esc_html__( 'Click the %s inserter and search for "Bento Grid".', 'bold-bento-grid' ),
-								'<strong>+</strong>'
-							);
-							?>
-						</li>
+						<li><?php esc_html_e( 'Click the + block inserter and search for "Bento Grid".', 'bold-bento-grid' ); ?></li>
 						<li><?php esc_html_e( 'In the block sidebar, set the number of tiles and choose a layout preset.', 'bold-bento-grid' ); ?></li>
-						<li><?php esc_html_e( 'Select each tile to add an image, a title/caption, colours, borders, or a hover effect.', 'bold-bento-grid' ); ?></li>
+						<li><?php esc_html_e( 'Select each tile to add an image, a title and caption, colours, borders, or a hover effect.', 'bold-bento-grid' ); ?></li>
 					</ol>
 					<a class="button button-primary" href="<?php echo esc_url( $new_page_url ); ?>">
 						<?php esc_html_e( 'Create a new page', 'bold-bento-grid' ); ?>
@@ -195,7 +208,7 @@ class Bento_Onboarding {
 						</p>
 						<ol>
 							<li><?php esc_html_e( 'Edit a page with Elementor.', 'bold-bento-grid' ); ?></li>
-							<li><?php esc_html_e( 'In the widget panel, open the "Bento Engine" category (or search "Bento Grid").', 'bold-bento-grid' ); ?></li>
+							<li><?php esc_html_e( 'In the widget panel, open the "Bento Engine" category, or search for "Bento Grid".', 'bold-bento-grid' ); ?></li>
 							<li><?php esc_html_e( 'Drag the Bento Grid widget onto the canvas.', 'bold-bento-grid' ); ?></li>
 							<li><?php esc_html_e( 'Use the Layout, Tiles, and Style tabs to configure the grid.', 'bold-bento-grid' ); ?></li>
 						</ol>
@@ -216,37 +229,13 @@ class Bento_Onboarding {
 			<div class="bento-welcome__pro">
 				<h2><?php esc_html_e( 'Need more?', 'bold-bento-grid' ); ?></h2>
 				<p>
-					<?php esc_html_e( '6+ tile layouts, glassmorphism presets, dynamic WooCommerce / query grids, and advanced animations are in Bold Bento Grid Pro.', 'bold-bento-grid' ); ?>
+					<?php esc_html_e( '6+ tile layouts, glassmorphism presets, dynamic WooCommerce and query grids, and advanced animations are in Bold Bento Grid Pro.', 'bold-bento-grid' ); ?>
 				</p>
 				<a class="button button-secondary" href="<?php echo esc_url( self::PRO_URL ); ?>" target="_blank" rel="noopener noreferrer">
 					<?php esc_html_e( 'Explore Bento Grid Pro', 'bold-bento-grid' ); ?>
 				</a>
 			</div>
 		</div>
-
-		<style>
-			.bento-welcome__lead { font-size: 14px; max-width: 40em; }
-			.bento-welcome__grid {
-				display: grid;
-				grid-template-columns: repeat( auto-fit, minmax( 300px, 1fr ) );
-				gap: 20px;
-				margin: 20px 0;
-				max-width: 900px;
-			}
-			.bento-welcome__card,
-			.bento-welcome__pro {
-				background: #fff;
-				border: 1px solid #dcdcde;
-				border-radius: 6px;
-				padding: 20px 24px;
-			}
-			.bento-welcome__pro { max-width: 900px; }
-			.bento-welcome__card h2,
-			.bento-welcome__pro h2 { margin-top: 0; }
-			.bento-welcome__card ol { margin: 12px 0 18px 18px; line-height: 1.7; }
-			.bento-welcome__status { margin: 0 0 12px; color: #50575e; }
-			.bento-welcome__status.is-ok { color: #007017; font-weight: 600; }
-		</style>
 		<?php
 	}
 }
